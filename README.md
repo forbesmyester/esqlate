@@ -55,7 +55,7 @@ We can specify parameters as strings, dates, datetimes, integers, selects, decim
 
 Another powerful feature is to provide the user the ability to link these simple JSON documents together together. Doing this giving many possible journeys allowing meaningful self-service administration.
 
-![You can link documents making lots of user journeys possible](./img/links.png);
+![You can link documents making lots of user journeys possible](./img/links.png)
 
 ## Installation
 
@@ -65,3 +65,8 @@ Installation is relatively simple. All you need to do is install:
  * [Esqlate Front](../esqlate-front) talks to Esqlate Server and provides a web based interface to the user.
 
 ## What still needs to be done?
+
+ * SERVER: Currently the server writes one result file which is a JSON document, which could conceivably be huge. This should probably include only the first n rows and the rest be fed into a separate [ndjson](http://ndjson.org) document.
+ * SERVER: Currently results are wrote to the local disk. These will grow so we need some form of process to delete these documents when they are of a certain age.
+ * SERVER: Currently we write files to the local disk, there should be an option to write these to Amazon S3 or similar. This will also enable high availability configurations.
+ * SERVER: Support other databases.
