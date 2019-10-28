@@ -57,4 +57,11 @@ Another powerful feature is to provide the user the ability to link these simple
 
 ![You can link documents making lots of user journeys possible](./img/links.png);
 
+## Installation
+
+Installation is relatively simple. All you need to do is install:
+
+ * [Esqlate Server](../esqlate-server) which is provides the API functions.
+ * [Esqlate Front](../esqlate-front) talks to Esqlate Server and provides a web based interface to the user.
+
 ## What still needs to be done?
