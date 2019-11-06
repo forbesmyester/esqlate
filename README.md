@@ -6,11 +6,11 @@ Esqlate is an attempt to give small teams a quick and easy form of administratio
 
 ## What problem is it solving?
 
-A lot of my work history has been based at small companies companies with small teams where there is enough resource to build a impressive product using great code and give users a great user experience, but it is sometimes difficult to justify investing as much time into creating administration panels which nobody other than internal employees will ever see.
+A lot of my work history has been based at small companies companies with small teams where there is enough resource to build a impressive product using great code, but it is sometimes difficult to justify investing as much time into creating administration panels which nobody other than internal employees will ever see.
 
 There are many times I have had to delve into the database because the narrow range of operations which are available on the administration panels does not cover what I, at that moment need to do.  I don't think this is always a problem, particularly when the project is at a very early stage but as a project grows the having developers or systems administrators log into the database and change settings has some real downsides:
 
- * You're taking time from developers / systems administrators to do things which could be done by less technical employees.
+ * You're taking time away from developers / systems administrators to do things which could be done by less technical employees.
  * Executing database operations is nearly always a bespoke operation on live data, meaning we have to be really, really careful and think things through in great detail.
  * Eventually, everyone will make a mistake, while logged into a live database the unintended effect could be disastrous.
 
@@ -66,7 +66,7 @@ Installation is relatively simple. All you need to do is install:
 
 ## What still needs to be done?
 
- * SERVER: Currently the server writes one result file which is a JSON document, which could conceivably be huge. This should probably include only the first n rows and the rest be fed into a separate [ndjson](http://ndjson.org) document.
- * SERVER: Currently results are wrote to the local disk. These will grow so we need some form of process to delete these documents when they are of a certain age.
- * SERVER: Currently we write files to the local disk, there should be an option to write these to Amazon S3 or similar. This will also enable high availability configurations.
- * SERVER: Support other databases.
+ * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.
+ * SERVER: We should probably be able to delete persisted files from the local disk (or AWS S3 in future) when they get to a certain age. This may be a separate process.
+ * SERVER: Support other types of databases.
+ * ~~SERVER: Currently the server writes one result file which is a JSON document, which could conceivably be huge. This should probably include only the first n rows and the full data set be stored as a downloadable CSV.~~
