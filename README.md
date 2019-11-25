@@ -59,14 +59,29 @@ Another powerful feature is to provide the user the ability to link these simple
 
 ## Installation
 
+### Docker Compose Method
+
+If you're just trying Esqlate out the most simple way to test it out is to use [Docker Compose](https://github.com/docker/compose).
+
+In the root of this repository you'll see a [docker-compose.yml](docker-compose.yml) file. To use this all you'll have to do is:
+
+ 1) Checkout [Esqlate Server](../esqlate-server) with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
+ 2) Checkout [Esqlate Front](../esqlate-front) with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
+ 3) Bring up the services using `docker-compose build && docker-compose up`.
+ 4) Customize the docker-compose.yml to meet your needs.
+
+### Directly on VM/Metal Method
+
 Installation is relatively simple. All you need to do is install:
 
- * [Esqlate Server](../esqlate-server) which is provides the API functions.
+ * [PostgreSQL](https://www.postgresql.org/) The most awesome SQL database.
+ * [Esqlate Server](../esqlate-server) Which is provides the API functions and does the actual database queries.
  * [Esqlate Front](../esqlate-front) talks to Esqlate Server and provides a web based interface to the user.
 
 ## What still needs to be done?
 
  * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.
- * SERVER: We should probably be able to delete persisted files from the local disk (or AWS S3 in future) when they get to a certain age. This may be a separate process.
  * SERVER: Support other types of databases.
- * ~~SERVER: Currently the server writes one result file which is a JSON document, which could conceivably be huge. This should probably include only the first n rows and the full data set be stored as a downloadable CSV.~~
+ * PROJECT: ~~Setup a docker-compose.yml file.~~
+ * SERVER: ~~We should probably be able to delete persisted files from the local disk (or AWS S3 in future) when they get to a certain age. This may be a separate process.~~
+ * SERVER: ~~Currently the server writes one result file which is a JSON document, which could conceivably be huge. This should probably include only the first n rows and the full data set be stored as a downloadable CSV.~~
