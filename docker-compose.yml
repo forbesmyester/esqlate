@@ -70,7 +70,7 @@ services:
       context: ./esqlate-front
       dockerfile: Dockerfile
     environment:
-    - API_SERVER=http://localhost:8800/esqlate-server/
+    - API_SERVER=/esqlate-server/
     - LISTEN_PORT=80
     # ports:
     # - "127.0.0.1:8802:80"
