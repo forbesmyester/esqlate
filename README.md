@@ -8,15 +8,15 @@ eSQLate is an attempt to give small teams a quick and easy form of administratio
 
 A lot of my work history has been based at small companies companies with small teams where there is enough resource to build a impressive product using great code, but it is sometimes difficult to justify investing as much time into creating administration panels which nobody other than internal employees will ever see.
 
-There are many times I have had to delve into the database because the narrow range of operations which are available on the administration panels does not cover what I, at that moment need to do.  I don't think this is always a problem, particularly when the project is at a very early stage but as a project grows the having developers or systems administrators log into the database and change settings has some real downsides:
+There are many times I have had to delve into the database because the narrow range of operations which are available on the administration panels does not cover what I, at that moment, need to do.  I don't think this is always a problem, particularly when the project is at a very early stage but as a project grows having developers or systems administrators log into the database and change settings has some real downsides:
 
- * You're taking time away from developers / systems administrators to do things which could be done by less technical employees.
+ * You're taking time away from developers / systems administrators to do things which could, sometimes, be done by less technical employees.
  * Executing database operations is nearly always a bespoke operation on live data, meaning we have to be really, really careful and think things through in great detail.
- * Eventually, everyone will make a mistake, while logged into a live database the unintended effect could be disastrous.
+ * Eventually, everyone will make a mistake, while logged into a live database the unintended effects could be disastrous.
 
 ## What is it?
 
-eSQLate interprets a simple JSON file like the below:
+eSQLate interprets a simple JSON (or JSON5) file like this:
 
 ```json
 {
@@ -41,7 +41,7 @@ eSQLate interprets a simple JSON file like the below:
 }
 ```
 
-Into a fairly usable and reasonable web interface shown below:
+Using the above it will produce a fairly usable and reasonable web interface like what is shown below:
 
 ![Simple JSON transformed into a fairly usable reasonable web interface](./img/simple-json.png)
 
@@ -56,6 +56,8 @@ We can specify parameters as strings, dates, datetimes, integers, selects, decim
 Another powerful feature is to provide the user the ability to link these simple JSON documents together together. Doing this giving many possible user journeys allowing basic, but meaningful self-service administration.
 
 ![You can link documents making lots of user journeys possible](./img/links.png)
+
+The result sets can also be downloaded as CSV files.
 
 ## Installation
 
@@ -80,6 +82,7 @@ Installation is relatively simple. All you need to do is install:
 
 ## What still needs to be done?
 
+ * FRONT_END: Persist the SQL toggle.
  * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.
  * SERVER: Support other types of databases.
  * PROJECT: ~~Setup a docker-compose.yml file.~~
