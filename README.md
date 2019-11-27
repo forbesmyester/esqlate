@@ -1,8 +1,8 @@
-# Esqlate
+# eSQLate
 
 ## Project Purpose
 
-Esqlate is an attempt to give small teams a quick and easy form of administration panel which is significantly more powerful than CRUD based systems but also as easy to set up.
+eSQLate is an attempt to give small teams a quick and easy form of administration panel which is significantly more powerful than CRUD based systems but also as easy to set up.
 
 ## What problem is it solving?
 
@@ -16,7 +16,7 @@ There are many times I have had to delve into the database because the narrow ra
 
 ## What is it?
 
-Esqlate interprets a simple JSON file like the below:
+eSQLate interprets a simple JSON file like the below:
 
 ```json
 {
@@ -61,12 +61,12 @@ Another powerful feature is to provide the user the ability to link these simple
 
 ### Docker Compose Method
 
-If you're just trying Esqlate out the most simple way to test it out is to use [Docker Compose](https://github.com/docker/compose).
+If you're just trying eSQLate out the most simple way to test it out is to use [Docker Compose](https://github.com/docker/compose).
 
 In the root of this repository you'll see a [docker-compose.yml](docker-compose.yml) file. To use this all you'll have to do is:
 
- 1) Checkout [Esqlate Server](../esqlate-server) with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
- 2) Checkout [Esqlate Front](../esqlate-front) with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
+ 1) Checkout [eSQLate Server](../esqlate-server) with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
+ 2) Checkout [eSQLate Front](../esqlate-front) with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
  3) Bring up the services using `docker-compose build && docker-compose up`.
  4) Customize the docker-compose.yml to meet your needs.
 
@@ -75,8 +75,8 @@ In the root of this repository you'll see a [docker-compose.yml](docker-compose.
 Installation is relatively simple. All you need to do is install:
 
  * [PostgreSQL](https://www.postgresql.org/) The most awesome SQL database.
- * [Esqlate Server](../esqlate-server) Which is provides the API functions and does the actual database queries.
- * [Esqlate Front](../esqlate-front) talks to Esqlate Server and provides a web based interface to the user.
+ * [eSQLate Server](../esqlate-server) Which is provides the API functions and does the actual database queries.
+ * [eSQLate Front](../esqlate-front) talks to eSQLate Server and provides a web based interface to the user.
 
 ## What still needs to be done?
 
