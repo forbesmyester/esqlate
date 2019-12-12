@@ -82,6 +82,9 @@ Installation is relatively simple. All you need to do is install:
 
 ## What still needs to be done?
 
+ * SERVER: Allow nullable fields
+ * LIB: Allow nullable fields
+ * FRONT: Allow nullable fields
  * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.
  * SERVER: Support other types of databases.
  * FRONT: ~~Some way to support the creation of the double encoding for `row_links`.~~
