@@ -84,6 +84,7 @@ Installation is relatively simple. All you need to do is install:
 
  * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.
  * SERVER: Support other types of databases.
+ * FRONT: ~~Some way to support the creation of the double encoding for `row_links`.~~
  * FRONT_END: ~~Persist the SQL toggle.~~
  * PROJECT: ~~Setup a docker-compose.yml file.~~
  * SERVER: ~~We should probably be able to delete persisted files from the local disk (or AWS S3 in future) when they get to a certain age. This may be a separate process.~~
