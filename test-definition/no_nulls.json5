@@ -1,0 +1,32 @@
+{
+    "name": "no_nulls",
+    "title": "No Nulls",
+    "description": "There are no nulls allowed",
+    "parameters": [
+        { "name": "name", "type": "string" },
+        { "name": "age", "type": "integer" },
+        { "name": "birthday", "type": "date" },
+        {
+            "display_field": "name",
+            "definition": "list",
+            "value_field": "id",
+            "type": "popup",
+            "name": "managed_by"
+        }
+    ],
+    "statement": "\
+        insert into test_insert (\n\
+            name,\n\
+            age,\n\
+            birthday,\n\
+            managed_by\n\
+        ) values (\n\
+            /* name = */ ${name},\n\
+            /* age = */ ${age},\n\
+            /* birthday = */ ${birthday},\n\
+            /* managed_by = */ ${managed_by}\n\
+        )\
+        ",
+    "statement_type": "INSERT"
+}
+

@@ -1,0 +1,14 @@
+{
+    "name": "create_table",
+    "title": "Create Table",
+    "parameters": [],
+    "statement": "\
+        create table if not exists test_insert (\n\
+            id serial,\n\
+            name varchar,\n\
+            age smallint,\n\
+            birthday date,\n\
+            managed_by bigint\n\
+        )\
+        "
+}

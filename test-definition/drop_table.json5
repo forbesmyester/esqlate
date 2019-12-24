@@ -1,0 +1,7 @@
+{
+    "name": "drop_table",
+    "title": "Drop Table",
+    "parameters": [],
+    "statement": "drop table if exists test_insert"
+}
+

@@ -1,0 +1,33 @@
+{
+    "name": "allow_nulls",
+    "title": "Allow Nulls",
+    "description": "This is a description",
+    "parameters": [
+        { "name": "name", "type": "string", "empty_string_is_null": true },
+        { "name": "age", "type": "integer", "empty_string_is_null": true },
+        { "name": "birthday", "type": "date", "empty_string_is_null": true },
+        {
+            "display_field": "name",
+            "definition": "list_employees",
+            "value_field": "id",
+            "type": "popup",
+            "name": "managed_by",
+            "empty_string_is_null": true
+        }
+    ],
+    "statement": "\
+        insert into test_insert (\n\
+            name,\n\
+            age,\n\
+            birthday,\n\
+            managed_by\n\
+        ) values (\n\
+            /* name = */ ${name},\n\
+            /* age = */ ${age},\n\
+            /* birthday = */ ${birthday},\n\
+            /* managed_by = */ ${managed_by}\n\
+        )\
+        ",
+    "statement_type": "INSERT"
+}
+

@@ -1,0 +1,7 @@
+{
+    "name": "list",
+    "title": "List",
+    "parameters": [],
+    "statement": "select * from test_insert",
+    "statement_type": "SELECT"
+}
