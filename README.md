@@ -118,7 +118,7 @@ Taking the super simple example it is easy to make it marginally useful
 }
 ```
 
-This will find people who's `first_name` or `last_name` includes `$search_string` anywhere withing.
+This will find people who's `first_name` or `last_name` includes `$search_string` anywhere within.
 
 We have:
 
@@ -257,7 +257,7 @@ Also converting the input of dates to dates is really easy (just change the `"ty
 
 The end result is that there will be a new control shown which when clicked will open a pop-up:
 
-![Add a popup](./top/insert-simple-popup.png)
+![Add a popup](./img/insert-simple-popup.png)
 
 ### Adding Links
 
