@@ -313,8 +313,8 @@ If you're just trying eSQLate out the most simple way to test it out is to use [
 
 In the root of this repository you'll see a [docker-compose.yml](docker-compose.yml) file. To use this all you'll have to do is:
 
- 1) Checkout [eSQLate Server](../esqlate-server) with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
- 2) Checkout [eSQLate Front](../esqlate-front) with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
+ 1) Checkout [eSQLate Server](https://github.com/forbesmyester/esqlate-server) with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
+ 2) Checkout [eSQLate Front](https://github.com/forbesmyester/esqlate-front) with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
  3) Bring up the services using `docker-compose build && docker-compose up`.
  4) Customize the docker-compose.yml to meet your needs.
 
@@ -323,8 +323,8 @@ In the root of this repository you'll see a [docker-compose.yml](docker-compose.
 Installation is relatively simple. All you need to do is install:
 
  * [PostgreSQL](https://www.postgresql.org/) The most awesome SQL database.
- * [eSQLate Server](../esqlate-server) Which is provides the API functions and does the actual database queries.
- * [eSQLate Front](../esqlate-front) talks to eSQLate Server and provides a web based interface to the user.
+ * [eSQLate Server](https://github.com/forbesmyester/esqlate-server) Which is provides the API functions and does the actual database queries.
+ * [eSQLate Front](https://github.com/forbesmyester/esqlate-front) talks to eSQLate Server and provides a web based interface to the user.
 
 ## What still needs to be done?
 
