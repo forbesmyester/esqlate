@@ -23,33 +23,19 @@ services:
     networks:
     - database
 
-  db_loader:
-    build:
-      context: ./esqlate-server
-      dockerfile: Dockerfile-load-northwind-example-database
-    environment:
-    - PGUSER=postgres
-    - PGPASSWORD=postgres
-    - PGDATABASE=postgres
-    - PGHOST=db
-    networks:
-    - database
-
   server:
     build:
       context: ./esqlate-server
       dockerfile: Dockerfile
     environment:
-    # - DEFINITION_DIRECTORY=definition
+    - DEFINITION_DIRECTORY=definition
     - LISTEN_PORT=80
     - PGUSER=postgres
     - PGPASSWORD=postgres
     - PGDATABASE=postgres
     - PGHOST=db
-    # ports:
-    # - "127.0.0.1:8803:80"
     volumes:
-    - ./definition:/esqlate-server/definition:ro # To use this uncomment the DEFINITION_DIRECTORY comment without environment
+    - ./test-definition:/esqlate-server/definition:ro # To use this uncomment the DEFINITION_DIRECTORY comment without environment
     - ./persistence:/esqlate-server/persistence
     networks:
     - database
@@ -72,8 +58,6 @@ services:
     environment:
     - API_SERVER=/esqlate-server/
     - LISTEN_PORT=80
-    # ports:
-    # - "127.0.0.1:8802:80"
     networks:
     - esqlate
 
@@ -85,15 +69,3 @@ services:
     - "127.0.0.1:8800:80"
     networks:
     - esqlate
-
-  # pgadmin:
-  #   image: dpage/pgadmin4
-  #   volumes:
-  #   - pgadmin4-var-lib-postgres:/var/lib/pgadmin
-  #   environment:
-  #   - PGADMIN_DEFAULT_EMAIL=esqlate-pgadmin@speechmarks.com
-  #   - PGADMIN_DEFAULT_PASSWORD=password
-  #   ports:
-  #   - "127.0.0.1:8801:80"
-  #   networks:
-  #   - database

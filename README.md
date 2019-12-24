@@ -47,7 +47,7 @@ Using the above it will produce a fairly usable and reasonable web interface lik
 
 If users are of a nervous disposition and scared off by seeing things they don't understand (like SQL) they can flip the toggle to convert the query based interface into a simple form.
 
-![People with a nervous disposition can hide things they don't understand](./img/nervous_disposition.png)
+![People with a nervous disposition can hide things they don't understand](./img/add-simple-form-mode.png)
 
 We can specify parameters as strings, dates, datetimes, integers, selects, decimals and even use a popup to allow rich selection of a specific parameter:
 
@@ -82,7 +82,7 @@ About the most simple thing we can do is create a simple select of a table. This
 }
 ```
     
-![The most simple thing](./simple.png)
+![The most simple thing](./img/simple.png)
 
 ### The most simple example - Enhanced
 
@@ -127,7 +127,7 @@ We have:
 
 How does it look?
 
-![The most simple thing - enhanced](./simple-enhanced.png)
+![The most simple thing - enhanced](./img/simple-enhanced.png)
 
 ### Allowing adding of employees
 
@@ -187,7 +187,7 @@ Taking what we know from "The most simple example" it is trivial to transform it
 
 The end result looks like the below:
 
-![A very simple insert](./insert-simple.png)
+![A very simple insert](./img/insert-simple.png)
 
 ### Allowing adding of employees - who they report to - enhanced!
 
@@ -257,7 +257,7 @@ Also converting the input of dates to dates is really easy (just change the `"ty
 
 The end result is that there will be a new control shown which when clicked will open a pop-up:
 
-![Add a popup](./insert-simple-popup.png)
+![Add a popup](./top/insert-simple-popup.png)
 
 ### Adding Links
 
@@ -271,11 +271,11 @@ Links are displayed between the definition and the results:
 
 ```javascript
 "links": [
-  { "href": "#employee_add", "text": "Add an employeet" }
+  { "href": "#employee_add", "text": "Add an employee" }
 ]
 ```
 
-![Links](./links.png)
+![Links](./img/links.png)
 
 #### 2. We can add to `"top_links"`, which are identical to `"links"` except that they occur above the displayed definition
 
@@ -283,11 +283,11 @@ Links are displayed above the definition:
 
 ```javascript
 "top_links": [
-  { "href": "#employee_add", "text": "Add an employeet" }
+  { "href": "#employee_add", "text": "Add an employee" }
 ]
 ```
 
-![Links](./top_links.png)
+![Links](./img/top_links.png)
 
 #### 3. We can add to `"row_links"`
 
@@ -299,7 +299,7 @@ This will add a row on every line of the results table. This is useful if the ro
 ]
 ```
 
-![Links on a row](./row_links.png)
+![Links on a row](./img/row_links.png)
 
 ### Hiding the "Employee Add" Menu Item
 
@@ -328,11 +328,12 @@ Installation is relatively simple. All you need to do is install:
 
 ## What still needs to be done?
 
- * SERVER: Allow nullable fields
- * LIB: Allow nullable fields
- * FRONT: Allow nullable fields
  * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.
  * SERVER: Support other types of databases.
+ * SERVER: ~~Allow nullable fields~~
+ * LIB: ~~Allow nullable fields~~
+ * FRONT: ~~Allow nullable fields~~
+ * SERVER: ~~Add new definitions when added to `$DEFINITION_DIRECTORY`.~~
  * FRONT: ~~Some way to support the creation of the double encoding for `row_links`.~~
  * FRONT_END: ~~Persist the SQL toggle.~~
  * PROJECT: ~~Setup a docker-compose.yml file.~~

@@ -1,2 +1,4 @@
 /esqlate-server
 /esqlate-front
+/node_modules
+package-lock.json
