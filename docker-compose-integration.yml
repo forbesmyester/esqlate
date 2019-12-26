@@ -16,22 +16,8 @@ services:
     image: postgres:12
     environment:
     - POSTGRES_PASSWORD=postgres
-    # ports:
-    # - "127.0.0.1:5432:5432"
     volumes:
     - db-data:/var/lib/postgresql/data
-    networks:
-    - database
-
-  db_loader:
-    build:
-      context: ./esqlate-server
-      dockerfile: Dockerfile-load-northwind-example-database
-    environment:
-    - PGUSER=postgres
-    - PGPASSWORD=postgres
-    - PGDATABASE=postgres
-    - PGHOST=db
     networks:
     - database
 
@@ -40,14 +26,14 @@ services:
       context: ./esqlate-server
       dockerfile: Dockerfile
     environment:
-    # - DEFINITION_DIRECTORY=definition
+    - DEFINITION_DIRECTORY=definition
     - LISTEN_PORT=80
     - PGUSER=postgres
     - PGPASSWORD=postgres
     - PGDATABASE=postgres
     - PGHOST=db
     volumes:
-    # - ./esqlate-server/example_definition:/esqlate-server/definition:ro # To use this uncomment the DEFINITION_DIRECTORY comment without environment
+    - ./test-definition:/esqlate-server/definition:ro
     - ./persistence:/esqlate-server/persistence
     networks:
     - database

@@ -311,7 +311,7 @@ If you wish to hide the "Employee Add" menu item it is simple enough. Just chang
 
 If you're just trying eSQLate out the most simple way to test it out is to use [Docker Compose](https://github.com/docker/compose).
 
-In the root of this repository you'll see a [docker-compose.yml](docker-compose.yml) file. To use this all you'll have to do is:
+If you check out this repository you'll see a [docker-compose.yml](docker-compose.yml) file. In the directory you checked it out to all you'll have to do is:
 
  1) Checkout [eSQLate Server](https://github.com/forbesmyester/esqlate-server) with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
  2) Checkout [eSQLate Front](https://github.com/forbesmyester/esqlate-front) with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
@@ -325,6 +325,14 @@ Installation is relatively simple. All you need to do is install:
  * [PostgreSQL](https://www.postgresql.org/) The most awesome SQL database.
  * [eSQLate Server](https://github.com/forbesmyester/esqlate-server) Which is provides the API functions and does the actual database queries.
  * [eSQLate Front](https://github.com/forbesmyester/esqlate-front) talks to eSQLate Server and provides a web based interface to the user.
+
+## Running the Integration Tests
+
+There are some basic integration tests that run using [Cyress](http://www.cypress.io). To run them first bring up testing docker compose and then run the tests:
+
+```bash
+docker-compose -f ./docker-compose-integration.yml up
+```
 
 ## What still needs to be done?
 
