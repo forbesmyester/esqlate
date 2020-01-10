@@ -4,7 +4,7 @@
   "description": "The front page of the Esqlate project ",
   "main": "runner.js",
   "scripts": {
-    "front": "cd ./node_modules/esqlate-front && npm install && npm run-script build-lighttpd && npm run-script build && npm start",
+    "front": "cd ./node_modules/esqlate-front && npm install && npm run-script build && npm start",
     "server": "cd ./node_modules/esqlate-server && npm install && npm run-script build && npm start"
   },
   "repository": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/forbesmyester/esqlate#readme",
   "dependencies": {
-    "esqlate-front": "^1.0.4",
+    "esqlate-front": "^1.0.5",
     "esqlate-server": "0.0.0",
     "get-port": "^5.1.0",
     "open": "^7.0.0",
