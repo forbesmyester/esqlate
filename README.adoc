@@ -1,24 +1,25 @@
-# eSQLate
+== eSQLate
 
-## Project Purpose
+=== Project Purpose
 
 eSQLate is an attempt to give small teams a quick and easy form of administration panel which is significantly more powerful than CRUD based systems but also as easy to set up.
 
-## What problem is it solving?
+=== What problem is it solving?
 
 A lot of my work history has been based at small companies companies with small teams where there is enough resource to build a impressive product using great code, but it is sometimes difficult to justify investing as much time into creating administration panels which nobody other than internal employees will ever see.
 
-There are many times I have had to delve into the database because the narrow range of operations which are available on the administration panels does not cover what I, at that moment, need to do.  I don't think this is always a problem, particularly when the project is at a very early stage but as a project grows having developers or systems administrators log into the database and change settings has some real downsides:
+There are many times I have had to delve into the database because the narrow range of operations which are available on the administration panels does not cover what I, at that moment, need to do. I don’t think this is always a problem, particularly when the project is at a very early stage but as a project grows having developers or systems administrators log into the database and change settings has some real downsides:
 
- * You're taking time away from developers / systems administrators to do things which could, sometimes, be done by less technical employees.
- * Executing database operations is nearly always a bespoke operation on live data, meaning we have to be really, really careful and think things through in great detail.
- * Eventually, everyone will make a mistake, while logged into a live database the unintended effects could be disastrous.
+* You’re taking time away from developers / systems administrators to do things which could, sometimes, be done by less technical employees.
+* Executing database operations is nearly always a bespoke operation on live data, meaning we have to be really, really careful and think things through in great detail.
+* Eventually, everyone will make a mistake, while logged into a live database the unintended effects could be disastrous.
 
-## What is it?
+=== What is it?
 
 eSQLate interprets a simple JSON (or JSON5) file like this:
 
-```json
+[source,json]
+----
 {
   "name": "product_search",
   "title": "Product Search",
@@ -39,35 +40,36 @@ eSQLate interprets a simple JSON (or JSON5) file like this:
     LEFT JOIN suppliers on suppliers.supplier_id = products.supplier_id\n\
     WHERE LOWER(product_name) LIKE CONCAT('%', LOWER($product_name), '%')"
 }
-```
+----
 
 Using the above it will produce a fairly usable and reasonable web interface like what is shown below:
 
-![Simple JSON transformed into a fairly usable reasonable web interface](./img/simple-json.png)
+image:./img/simple-json.png[Simple JSON transformed into a fairly usable reasonable web interface]
 
-If users are of a nervous disposition and scared off by seeing things they don't understand (like SQL) they can flip the toggle to convert the query based interface into a simple form.
+If users are of a nervous disposition and scared off by seeing things they don’t understand (like SQL) they can flip the toggle to convert the query based interface into a simple form.
 
-![People with a nervous disposition can hide things they don't understand](./img/add-simple-form-mode.png)
+image:./img/add-simple-form-mode.png[People with a nervous disposition can hide things they don’t understand]
 
 We can specify parameters as strings, dates, datetimes, integers, selects, decimals and even use a popup to allow rich selection of a specific parameter:
 
-![Slideshow of some of the controls available](./img/anim.gif)
+image:./img/anim.gif[Slideshow of some of the controls available]
 
 Another powerful feature is to provide the user the ability to link these simple JSON documents together together. Doing this giving many possible user journeys allowing basic, but meaningful self-service administration.
 
-![You can link documents making lots of user journeys possible](./img/links.png)
+image:./img/links.png[You can link documents making lots of user journeys possible]
 
 The result sets can also be downloaded as CSV files.
 
-## Tutorial - Adding a new workflow
+=== Tutorial - Adding a new workflow
 
-### The most simple example
+==== The most simple example
 
 About the most simple thing we can do is create a simple select of a table. This can be achieved by writing some simple JSON5 into a file:
 
-##### example_definition/employee_list.json5
+===== example_definition/employee_list.json5
 
-```javascript
+[source,javascript]
+----
 {
     "name": "employee_list",
     "title": "Employee List",
@@ -80,17 +82,18 @@ About the most simple thing we can do is create a simple select of a table. This
             reports_to\n\
         FROM employees"
 }
-```
-    
-![The most simple thing](./img/simple.png)
+----
 
-### The most simple example - Enhanced
+image:./img/simple.png[The most simple thing]
+
+==== The most simple example - Enhanced
 
 Taking the super simple example it is easy to make it marginally useful
 
-##### example_definition/employee_list.json5
+===== example_definition/employee_list.json5
 
-```javascript
+[source,javascript]
+----
 {
     "name": "employee_list",
     "title": "Employee List",
@@ -116,26 +119,27 @@ Taking the super simple example it is easy to make it marginally useful
         ",
     "statement_type": "SELECT"
 }
-```
+----
 
-This will find people who's `first_name` or `last_name` includes `$search_string` anywhere within.
+This will find people who’s `first_name` or `last_name` includes `$search_string` anywhere within.
 
 We have:
 
- * Defined a parameter named `search_string` which could also be wrote as `${search_string}` if you need to be unambiguous about where the string terminates
- * Added a `statement_type` which really does nothing other than color the button below the query... but it goes a nice red when its a `DELETE`.
+* Defined a parameter named `search_string` which could also be wrote as `${search_string}` if you need to be unambiguous about where the string terminates
+* Added a `statement_type` which really does nothing other than color the button below the query… but it goes a nice red when its a `DELETE`.
 
 How does it look?
 
-![The most simple thing - enhanced](./img/simple-enhanced.png)
+image:./img/simple-enhanced.png[The most simple thing - enhanced]
 
-### Allowing adding of employees
+==== Allowing adding of employees
 
-Taking what we know from "The most simple example" it is trivial to transform it into an `INSERT` statement, however I took the liberty of adding some comments due to the SQL separates column names from the `VALUES`.
+Taking what we know from ``The most simple example'' it is trivial to transform it into an `INSERT` statement, however I took the liberty of adding some comments due to the SQL separates column names from the `VALUES`.
 
-##### example_definition/employee_add.json5
+===== example_definition/employee_add.json5
 
-```javascript
+[source,javascript]
+----
 {
     "name": "employee_add",
     "title": "Add an Employee",
@@ -183,23 +187,24 @@ Taking what we know from "The most simple example" it is trivial to transform it
         )",
     "statement_type": "INSERT"
 }
-```
+----
 
 The end result looks like the below:
 
-![A very simple insert](./img/insert-simple.png)
+image:./img/insert-simple.png[A very simple insert]
 
-### Allowing adding of employees - who they report to - enhanced!
+==== Allowing adding of employees - who they report to - enhanced!
 
-I dislike the way a user would have to take note of the user_id that the new employee would report to...
+I dislike the way a user would have to take note of the user_id that the new employee would report to…
 
 To fix it all we need to do is change `{ "name": "reports_to", "type": "integer" }` into `{ "display_field": "full_name", "definition": "employee_list", "value_field": "employee_id", "type": "popup", "name": "reports_to" }`. The final file is shown below:
 
 Also converting the input of dates to dates is really easy (just change the `"type"`).
 
-##### example_definition/employee_add.json5
+===== example_definition/employee_add.json5
 
-```javascript
+[source,javascript]
+----
 {
     "name": "employee_add",
     "title": "Add an Employee",
@@ -253,97 +258,102 @@ Also converting the input of dates to dates is really easy (just change the `"ty
         )",
     "statement_type": "INSERT"
 }
-```
+----
 
 The end result is that there will be a new control shown which when clicked will open a pop-up:
 
-![Add a popup](./img/insert-simple-popup.png)
+image:./img/insert-simple-popup.png[Add a popup]
 
-### Adding Links
+==== Adding Links
 
-The definitions we've defined so far do not have to be completely independent. It is possible to define links both on each row of the result set and above/below of the definition / form itself.
+The definitions we’ve defined so far do not have to be completely independent. It is possible to define links both on each row of the result set and above/below of the definition / form itself.
 
 Lets first add a link from the Employee List to Employee Add. We can do this in three ways to a definition:
 
-#### 1. We can add to `"links"`
+===== 1. We can add to `"links"`
 
 Links are displayed between the definition and the results:
 
-```javascript
+[source,javascript]
+----
 "links": [
   { "href": "#employee_add", "text": "Add an employee" }
 ]
-```
+----
 
-![Links](./img/links.png)
+image:./img/links.png[Links]
 
-#### 2. We can add to `"top_links"`, which are identical to `"links"` except that they occur above the displayed definition
+===== 2. We can add to `"top_links"`, which are identical to `"links"` except that they occur above the displayed definition
 
 Links are displayed above the definition:
 
-```javascript
+[source,javascript]
+----
 "top_links": [
   { "href": "#employee_add", "text": "Add an employee" }
 ]
-```
+----
 
-![Links](./img/top_links.png)
+image:./img/top_links.png[Links]
 
-#### 3. We can add to `"row_links"`
+===== 3. We can add to `"row_links"`
 
 This will add a row on every line of the results table. This is useful if the row denotes some information you want to use in the place which you are linking to. To do this add the following to the root of the definition:
 
-```javascript
+[source,javascript]
+----
 "row_links": [
   { "href": "#employee_add?reports_to=${popup employee_id full_name}", "text": "Add Subordinate for ${full_name}" }
 ]
-```
+----
 
-![Links on a row](./img/row_links.png)
+image:./img/row_links.png[Links on a row]
 
-### Hiding the "Employee Add" Menu Item
+==== Hiding the ``Employee Add'' Menu Item
 
-If you wish to hide the "Employee Add" menu item it is simple enough. Just change the name (and filename) from `employee_add.json5` to `_employee_add.json5`. Beware any links that exist will also need to updated.
+If you wish to hide the ``Employee Add'' menu item it is simple enough. Just change the name (and filename) from `employee_add.json5` to `_employee_add.json5`. Beware any links that exist will also need to updated.
 
-## Installation
+=== Installation
 
-### Docker Compose Method
+==== Docker Compose Method
 
-If you're just trying eSQLate out the most simple way to test it out is to use [Docker Compose](https://github.com/docker/compose).
+If you’re just trying eSQLate out the most simple way to test it out is to use https://github.com/docker/compose[Docker Compose].
 
-If you check out this repository you'll see a [docker-compose.yml](docker-compose.yml) file. In the directory you checked it out to all you'll have to do is:
+If you check out this repository you’ll see a docker-compose.yml file. In the directory you checked it out to all you’ll have to do is:
 
- 1) Checkout [eSQLate Server](https://github.com/forbesmyester/esqlate-server) with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
- 2) Checkout [eSQLate Front](https://github.com/forbesmyester/esqlate-front) with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
- 3) Bring up the services using `docker-compose build && docker-compose up`.
- 4) Customize the docker-compose.yml to meet your needs.
+[arabic]
+. Checkout https://github.com/forbesmyester/esqlate-server[eSQLate Server] with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
+. Checkout https://github.com/forbesmyester/esqlate-front[eSQLate Front] with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
+. Bring up the services using `docker-compose build && docker-compose up`.
+. Customize the docker-compose.yml to meet your needs.
 
-### Directly on VM/Metal Method
+==== Directly on VM/Metal Method
 
 Installation is relatively simple. All you need to do is install:
 
- * [PostgreSQL](https://www.postgresql.org/) The most awesome SQL database.
- * [eSQLate Server](https://github.com/forbesmyester/esqlate-server) Which is provides the API functions and does the actual database queries.
- * [eSQLate Front](https://github.com/forbesmyester/esqlate-front) talks to eSQLate Server and provides a web based interface to the user.
+* https://www.postgresql.org/[PostgreSQL] The most awesome SQL database.
+* https://github.com/forbesmyester/esqlate-server[eSQLate Server] Which is provides the API functions and does the actual database queries.
+* https://github.com/forbesmyester/esqlate-front[eSQLate Front] talks to eSQLate Server and provides a web based interface to the user.
 
-## Running the Integration Tests
+=== Running the Integration Tests
 
-There are some basic integration tests that run using [Cyress](http://www.cypress.io). To run them first bring up testing docker compose and then run the tests:
+There are some basic integration tests that run using http://www.cypress.io[Cyress]. To run them first bring up testing docker compose and then run the tests:
 
-```bash
+[source,bash]
+----
 docker-compose -f ./docker-compose-integration.yml up
-```
+----
 
-## What still needs to be done?
+=== What still needs to be done?
 
- * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.
- * SERVER: Support other types of databases.
- * SERVER: ~~Allow nullable fields~~
- * LIB: ~~Allow nullable fields~~
- * FRONT: ~~Allow nullable fields~~
- * SERVER: ~~Add new definitions when added to `$DEFINITION_DIRECTORY`.~~
- * FRONT: ~~Some way to support the creation of the double encoding for `row_links`.~~
- * FRONT_END: ~~Persist the SQL toggle.~~
- * PROJECT: ~~Setup a docker-compose.yml file.~~
- * SERVER: ~~We should probably be able to delete persisted files from the local disk (or AWS S3 in future) when they get to a certain age. This may be a separate process.~~
- * SERVER: ~~Currently the server writes one result file which is a JSON document, which could conceivably be huge. This should probably include only the first n rows and the full data set be stored as a downloadable CSV.~~
+* SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.
+* SERVER: Support other types of databases.
+* SERVER: [line-through]*Allow nullable fields*
+* LIB: [line-through]*Allow nullable fields*
+* FRONT: [line-through]*Allow nullable fields*
+* SERVER: [line-through]*Add new definitions when added to `$DEFINITION_DIRECTORY`.*
+* FRONT: [line-through]*Some way to support the creation of the double encoding for `row_links`.*
+* FRONT_END: [line-through]*Persist the SQL toggle.*
+* PROJECT: [line-through]*Setup a docker-compose.yml file.*
+* SERVER: [line-through]*We should probably be able to delete persisted files from the local disk (or AWS S3 in future) when they get to a certain age. This may be a separate process.*
+* SERVER: [line-through]*Currently the server writes one result file which is a JSON document, which could conceivably be huge. This should probably include only the first n rows and the full data set be stored as a downloadable CSV.*
