@@ -1,10 +1,10 @@
 {
     "name": "allow_nulls",
-    "title": "Allow Nulls",
-    "description": "This is a description",
+    "title": "Add Data Allowing Nulls",
+    "description": "Add data to the table while allowing null values in some fields",
     "parameters": [
         { "name": "name", "type": "string", "empty_string_is_null": true },
-        { "name": "age", "type": "integer", "empty_string_is_null": true },
+        { "name": "height_cm", "type": "integer", "empty_string_is_null": true },
         { "name": "birthday", "type": "date", "empty_string_is_null": true },
         {
             "display_field": "name",
@@ -16,17 +16,18 @@
         }
     ],
     "statement": "\
-        insert into test_insert (\n\
+        insert into esqlate_test_user_list (\n\
             name,\n\
-            age,\n\
+            height_cm,\n\
             birthday,\n\
             managed_by\n\
         ) values (\n\
             /* name = */ ${name},\n\
-            /* age = */ ${age},\n\
+            /* height_cm = */ ${height_cm},\n\
             /* birthday = */ ${birthday},\n\
             /* managed_by = */ ${managed_by}\n\
         )\
+        RETURNING CONCAT('Inserted ', name) as insertion_result\
         ",
     "statement_type": "INSERT"
 }

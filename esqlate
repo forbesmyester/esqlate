@@ -20,7 +20,7 @@ const args = yargs
     .option('U', { alias: 'user', describe: "The username used to authenticate against PostgreSQL", type: "string" })
     .option('W', { alias: 'password', describe: "The password used to authenticate against PostgreSQL", type: "string" })
     .option('d', { alias: 'database', describe: "The database in PostgreSQL to connect to", type: "string" })
-    .option('f', {alias: 'definition_directory', describe: "The directory where definitions are stored", type: "string", default: path.resolve("node_modules/esqlate-server/example_definition")})
+    .option('f', {alias: 'definition_directory', describe: "The directory where definitions are stored", type: "string", default: path.resolve("definition")})
     .normalize("definition_directory")
     .coerce("definition_directory", path.resolve)
     .demand('host')
@@ -29,11 +29,26 @@ const args = yargs
     .demand('password')
     .demand('database')
     .check((args) => {
+
+        if (!fs.existsSync(args.definition_directory)) {
+            fs.mkdirSync(args.definition_directory);
+            fs.readdirSync("./test-definition").forEach(
+                (filename) => {
+                    fs.copyFileSync(
+                        path.join("./test-definition/", filename),
+                        path.join(args.definition_directory, filename)
+                    );
+                }
+            );
+        }
+
         if (
             fs.existsSync(args.definition_directory) &&
             fs.statSync(args.definition_directory).isDirectory()
         ) {return true;}
-        throw new Error("The definition directory (-d) must already exist and be a directory");
+
+
+        throw new Error("The definition directory (-d) either does not exist or is not a directory");
         // return false;
     })
     .help()
@@ -88,7 +103,7 @@ Promise.all([getPort({port: 3500}), getPort({port: 3600})])
 
         const openInterval = setInterval(() => {
             checkUp(serverPort, frontPort)
-                .then(() => {
+                .then(() =>  {
                     console.log("Opening browser to 'http://localhost:" + frontPort + "'");
                     open("http://localhost:" + frontPort)
                     clearInterval(openInterval);

@@ -1,10 +1,10 @@
 {
     "name": "no_nulls",
-    "title": "No Nulls",
-    "description": "There are no nulls allowed",
+    "title": "Add Data Requiring All Data",
+    "description": "Add data to the table but require all data to be filled in",
     "parameters": [
         { "name": "name", "type": "string" },
-        { "name": "age", "type": "integer" },
+        { "name": "height_cm", "type": "integer" },
         { "name": "birthday", "type": "date" },
         {
             "display_field": "name",
@@ -15,17 +15,18 @@
         }
     ],
     "statement": "\
-        insert into test_insert (\n\
+        insert into esqlate_test_user_list (\n\
             name,\n\
-            age,\n\
+            height_cm,\n\
             birthday,\n\
             managed_by\n\
         ) values (\n\
             /* name = */ ${name},\n\
-            /* age = */ ${age},\n\
+            /* height_cm = */ ${height_cm},\n\
             /* birthday = */ ${birthday},\n\
             /* managed_by = */ ${managed_by}\n\
         )\
+        RETURNING CONCAT('Inserted ', name) as insertion_result\
         ",
     "statement_type": "INSERT"
 }

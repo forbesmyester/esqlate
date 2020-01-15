@@ -49,7 +49,7 @@ describe('Ensure table structures', function() {
 
 describe('Allow Nulls', function () {
     it('Adds some data', function () {
-        goTo(cy, true, "Allow Nulls");
+        goTo(cy, true, "Add Data Allowing Nulls");
 
         cy.get(`.code-code [data-parameter-name="name"]`)
             .type("J Manager");
@@ -68,9 +68,9 @@ describe('Highlighting Nulls and insert', function () {
 
     it('Highlighting nulls', function() {
 
-        goTo(cy, true, "No Nulls");
+        goTo(cy, true, "Add Data Requiring All Data");
 
-        for (const fieldName of ["managed_by", "birthday", "age"]) {
+        for (const fieldName of ["managed_by", "birthday", "height_cm"]) {
             cy.get(`.code-code .field_highlight[data-field="${fieldName}"]`)
                 .should("have.css", "color")
                 .and("be.colored", "rgb(171, 70, 66)");
@@ -92,8 +92,8 @@ describe('Highlighting Nulls and insert', function () {
 
         cy.get('#toast-error-wrapper').should('not.be.visible');
 
-        cy.get(`.code-code [data-parameter-name="age"]`)
-            .type("22");
+        cy.get(`.code-code [data-parameter-name="height_cm"]`)
+            .type("175");
 
         cy.get(`.code-code [data-parameter-name="name"]`)
             .type("J Junior");

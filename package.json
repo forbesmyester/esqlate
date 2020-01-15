@@ -1,11 +1,11 @@
 {
   "name": "esqlate",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "The front page of the Esqlate project ",
   "main": "runner.js",
   "scripts": {
-    "front": "cd ./node_modules/esqlate-front && npm install && npm run-script build && npm start",
-    "server": "cd ./node_modules/esqlate-server && npm install && npm run-script build && npm start"
+    "front": "cd ./node_modules/esqlate-front && bash -c ' [ ! -d node_modules ] && npm install || true ' && npm run-script build && npm start",
+    "server": "cd ./node_modules/esqlate-server && bash -c ' [ ! -d node_modules ] && npm install || true ' && npm run-script build && npm start"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,9 @@
     "get-port": "^5.1.0",
     "open": "^7.0.0",
     "yargs": "^15.1.0"
+  },
+  "devDependencies": {
+    "chai-colors": "^1.0.1",
+    "cypress": "^3.8.2"
   }
 }

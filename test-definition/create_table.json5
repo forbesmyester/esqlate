@@ -3,10 +3,10 @@
     "title": "Create Table",
     "parameters": [],
     "statement": "\
-        create table if not exists test_insert (\n\
+        create table if not exists esqlate_test_user_list (\n\
             id serial,\n\
             name varchar,\n\
-            age smallint,\n\
+            height_cm int,\n\
             birthday date,\n\
             managed_by bigint\n\
         )\

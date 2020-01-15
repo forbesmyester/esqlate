@@ -315,17 +315,28 @@ If you wish to hide the ``Employee Add'' menu item it is simple enough. Just cha
 
 === Installation
 
+==== Desktop Method
+
+If you have a PostgreSQL server and want to run it on your local laptop you may choose to use the desktop method.
+
+This will has the nicety of automagically picking port numbers and opening the browser once everything has started up.
+
+* Clone this repository with https://github.com/forbesmyester/esqlate[eSQLate] with `git clone https://github.com/forbesmyester/esqlate.git`.
+* Set up a PostgreSQL server and get the hostname, port, username and password.
+* Change into the directory you checked out the code into with `cd esqlate`
+* Run `./esqlate`.
+
 ==== Docker Compose Method
 
 If you’re just trying eSQLate out the most simple way to test it out is to use https://github.com/docker/compose[Docker Compose].
 
 If you check out this repository you’ll see a docker-compose.yml file. In the directory you checked it out to all you’ll have to do is:
 
-[arabic]
-. Checkout https://github.com/forbesmyester/esqlate-server[eSQLate Server] with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
-. Checkout https://github.com/forbesmyester/esqlate-front[eSQLate Front] with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
-. Bring up the services using `docker-compose build && docker-compose up`.
-. Customize the docker-compose.yml to meet your needs.
+
+* Clone https://github.com/forbesmyester/esqlate-server[eSQLate Server] with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
+* Clone https://github.com/forbesmyester/esqlate-front[eSQLate Front] with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
+* Bring up the services using `docker-compose build && docker-compose up`.
+* Customize the docker-compose.yml to meet your needs.
 
 ==== Directly on VM/Metal Method
 

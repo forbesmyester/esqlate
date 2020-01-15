@@ -1,4 +1,7 @@
 /esqlate-server
 /esqlate-front
+/persistence
 /node_modules
 package-lock.json
+/cypress/videos
+/definition

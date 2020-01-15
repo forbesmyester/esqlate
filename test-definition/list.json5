@@ -1,7 +1,8 @@
 {
     "name": "list",
-    "title": "List",
+    "title": "List Data",
+    "description": "Lists all data within the table",
     "parameters": [],
-    "statement": "select * from test_insert",
+    "statement": "select * from esqlate_test_user_list",
     "statement_type": "SELECT"
 }
