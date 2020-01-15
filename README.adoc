@@ -359,12 +359,3 @@ docker-compose -f ./docker-compose-integration.yml up
 
 * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.
 * SERVER: Support other types of databases.
-* SERVER: [line-through]*Allow nullable fields*
-* LIB: [line-through]*Allow nullable fields*
-* FRONT: [line-through]*Allow nullable fields*
-* SERVER: [line-through]*Add new definitions when added to `$DEFINITION_DIRECTORY`.*
-* FRONT: [line-through]*Some way to support the creation of the double encoding for `row_links`.*
-* FRONT_END: [line-through]*Persist the SQL toggle.*
-* PROJECT: [line-through]*Setup a docker-compose.yml file.*
-* SERVER: [line-through]*We should probably be able to delete persisted files from the local disk (or AWS S3 in future) when they get to a certain age. This may be a separate process.*
-* SERVER: [line-through]*Currently the server writes one result file which is a JSON document, which could conceivably be huge. This should probably include only the first n rows and the full data set be stored as a downloadable CSV.*
