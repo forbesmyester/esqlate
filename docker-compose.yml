@@ -1,5 +1,7 @@
 version: "3"
 
+# See notes at https://github.com/forbesmyester/esqlate/blob/master/README.adoc#docker-compose-method - You need to clone some repos first...
+
 volumes: 
   db-data:
   pgadmin4-var-lib-postgres:
@@ -70,6 +72,7 @@ services:
     environment:
     - API_SERVER=/esqlate-server/
     - LISTEN_PORT=80
+    - HOST=0.0.0.0 # Make sirv listen on all IPs for NGINX
     networks:
     - esqlate
 

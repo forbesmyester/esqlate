@@ -54,7 +54,7 @@ We can specify parameters as strings, dates, datetimes, integers, selects, decim
 
 image:./img/anim.gif[Slideshow of some of the controls available]
 
-Another powerful feature is to provide the user the ability to link these simple JSON documents together together. Doing this giving many possible user journeys allowing basic, but meaningful self-service administration.
+Another powerful feature is to provide the user the ability to link these simple JSON documents together. Doing this gives many possible user journeys allowing basic, but meaningful, self-service administration.
 
 image:./img/links.png[You can link documents making lots of user journeys possible]
 
