@@ -1,11 +1,14 @@
 {
   "name": "esqlate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "The front page of the Esqlate project ",
   "main": "runner.js",
   "scripts": {
-    "front": "cd ./node_modules/esqlate-front && bash -c ' [ ! -d node_modules ] && npm install || true ' && npm run-script build && npm start",
-    "server": "cd ./node_modules/esqlate-server && bash -c ' [ ! -d node_modules ] && npm install || true ' && npm run-script build && npm start"
+    "front-prepare": "cd ./node_modules/esqlate-front && bash -c ' [ ! -d node_modules ] && npm install || true ' && npm run-script build-templates",
+    "server-prepare": "cd ./node_modules/esqlate-server && bash -c ' [ ! -d node_modules ] && npm install || true '",
+    "front": "npm run-script front-prepare && cd ./node_modules/esqlate-front && npm start",
+    "server": "npm run-script server-prepare && cd ./node_modules/esqlate-server && npm start",
+    "test": "npm run-script front-prepare && npm run-script server-prepare"
   },
   "repository": {
     "type": "git",
@@ -18,8 +21,8 @@
   },
   "homepage": "https://github.com/forbesmyester/esqlate#readme",
   "dependencies": {
-    "esqlate-front": "^1.0.6",
-    "esqlate-server": "0.0.0",
+    "esqlate-front": "^1.0.7",
+    "esqlate-server": "^1.0.0",
     "get-port": "^5.1.0",
     "open": "^7.0.0",
     "yargs": "^15.1.0"
