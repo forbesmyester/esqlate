@@ -8,7 +8,7 @@
         { "name": "birthday", "type": "date", "empty_string_is_null": true },
         {
             "display_field": "name",
-            "definition": "list_employees",
+            "definition": "list",
             "value_field": "id",
             "type": "popup",
             "name": "managed_by",
