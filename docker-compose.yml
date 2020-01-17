@@ -1,5 +1,7 @@
 version: "3"
 
+# See notes at https://github.com/forbesmyester/esqlate/blob/master/README.adoc#docker-compose-method - You need to clone some repos first...
+
 volumes: 
   db-data:
   pgadmin4-var-lib-postgres:
