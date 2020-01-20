@@ -27,7 +27,7 @@ services:
 
   db_loader:
     build:
-      context: ./esqlate-server
+      context: ./node_modules/esqlate-server
       dockerfile: Dockerfile-load-northwind-example-database
     environment:
     - PGUSER=postgres
@@ -39,7 +39,7 @@ services:
 
   server:
     build:
-      context: ./esqlate-server
+      context: ./node_modules/esqlate-server
       dockerfile: Dockerfile
     environment:
     # - DEFINITION_DIRECTORY=definition
@@ -57,7 +57,7 @@ services:
 
   reaper:
     build:
-      context: ./esqlate-server
+      context: ./node_modules/esqlate-server
       dockerfile: Dockerfile-reaper
     environment:
     - AGE_BEFORE_CLEANING=1
@@ -67,7 +67,7 @@ services:
 
   front:
     build:
-      context: ./esqlate-front
+      context: ./node_modules/esqlate-front
       dockerfile: Dockerfile
     environment:
     - API_SERVER=/esqlate-server/
