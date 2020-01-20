@@ -56,6 +56,7 @@ services:
     environment:
     - API_SERVER=/esqlate-server/
     - LISTEN_PORT=80
+    - HOST=0.0.0.0 # Make sirv listen on all IPs for NGINX
     networks:
     - esqlate
 
