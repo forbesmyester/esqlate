@@ -1,6 +1,6 @@
 {
   "name": "esqlate",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "The front page of the Esqlate project ",
   "main": "runner.js",
   "scripts": {

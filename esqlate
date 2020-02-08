@@ -32,10 +32,10 @@ const args = yargs
 
         if (!fs.existsSync(args.definition_directory)) {
             fs.mkdirSync(args.definition_directory);
-            fs.readdirSync("./test-definition").forEach(
+            fs.readdirSync("./node_modules/esqlate-server/example_definition").forEach(
                 (filename) => {
                     fs.copyFileSync(
-                        path.join("./test-definition/", filename),
+                        path.join("./node_modules/esqlate-server/example_definition", filename),
                         path.join(args.definition_directory, filename)
                     );
                 }
