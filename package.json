@@ -22,7 +22,7 @@
   "homepage": "https://github.com/forbesmyester/esqlate#readme",
   "dependencies": {
     "esqlate-front": "^1.0.7",
-    "esqlate-server": "^1.0.0",
+    "esqlate-server": "^1.0.1",
     "get-port": "^5.1.0",
     "open": "^7.0.0",
     "yargs": "^15.1.0"
