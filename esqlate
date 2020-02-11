@@ -6,53 +6,33 @@ const getPort = require("get-port");
 const http = require('http');
 const open = require("open");
 const path = require("path");
-const yargs = require("yargs");
+const program = require("commander");
 
 
-const args = yargs
-    .usage('$0 [args] - Starts eSQLate connected to an already known PostgreSQL server')
-    .version(false)
-    .example("$0 --help", "Shows help\n")
-    .example("DEFINITION_DIRECTORY=$PWD/definition PGHOST=localhost PGDATABASE=postgres PGUSERNAME=postgres PGPASSWORD=secret $0", "User with standard PostgreSQL environmental variables")
-    .env('PG')
-    .option('h', { alias: 'host', describe: "The PostgreSQL hostname or IP address", type: "string" })
-    .option('p', { alias: 'port', describe: "The port which PostgreSQL is listening on", type: "string" })
-    .option('U', { alias: 'user', describe: "The username used to authenticate against PostgreSQL", type: "string" })
-    .option('W', { alias: 'password', describe: "The password used to authenticate against PostgreSQL", type: "string" })
-    .option('d', { alias: 'database', describe: "The database in PostgreSQL to connect to", type: "string" })
-    .option('f', {alias: 'definition_directory', describe: "The directory where definitions are stored", type: "string", default: path.resolve("definition")})
-    .normalize("definition_directory")
-    .coerce("definition_directory", path.resolve)
-    .demand('host')
-    .demand('user')
-    .default('port', "5432")
-    .demand('password')
-    .demand('database')
-    .check((args) => {
+function prepareDestinationDirectory(value) {
 
-        if (!fs.existsSync(args.definition_directory)) {
-            fs.mkdirSync(args.definition_directory);
-            fs.readdirSync("./node_modules/esqlate-server/example_definition").forEach(
-                (filename) => {
-                    fs.copyFileSync(
-                        path.join("./node_modules/esqlate-server/example_definition", filename),
-                        path.join(args.definition_directory, filename)
-                    );
-                }
-            );
-        }
+    const normalized = path.resolve(path.normalize(value));
+    if (!fs.existsSync(normalized)) {
+        fs.mkdirSync(normalized);
+        fs.readdirSync("./node_modules/esqlate-server/example_definition").forEach(
+            (filename) => {
+                fs.copyFileSync(
+                    path.join("./node_modules/esqlate-server/example_definition", filename),
+                    path.join(normalized, filename)
+                );
+            }
+        );
+    }
 
-        if (
-            fs.existsSync(args.definition_directory) &&
-            fs.statSync(args.definition_directory).isDirectory()
-        ) {return true;}
+    if (
+        fs.existsSync(normalized) &&
+        fs.statSync(normalized).isDirectory()
+    ) { return normalized }
 
 
-        throw new Error("The definition directory (-d) either does not exist or is not a directory");
-        // return false;
-    })
-    .help()
-    .argv
+    throw new Error("The definition directory (-f) either does not exist or is not a directory");
+}
+
 
 function checkPortUp(frontPort) {
     return new Promise((resolve, reject) => {
@@ -64,82 +44,223 @@ function checkPortUp(frontPort) {
     });
 }
 
+
 function checkUp(serverPort, frontPort) {
     return Promise.all([checkPortUp(serverPort), checkPortUp(frontPort)])
         .then(() => true)
 }
 
-Promise.all([getPort({port: 3500}), getPort({port: 3600})])
-    .then(([serverPort, frontPort]) => {
 
-        console.log("Server launching on 'http://localhost:" + serverPort + "'");
-        console.log("Front launching on 'http://localhost:" + frontPort + "'");
+function launch(serverEnvironment, frontEnvironment) {
 
-        const server = exec(
-            "npm run-script server",
-            { env: { ...process.env,
-                CORS_WEB_FRONTEND_ORIGIN: "http://localhost:" + frontPort,
-                DEFINITION_DIRECTORY: args.definition_directory,
-                LISTEN_PORT: serverPort,
-                PGPORT: args.port,
-                PGPASSWORD: args.password,
-                PGUSER: args.user,
-                PGDATABASE: args.database,
-                PGHOST: args.host,
-            }}
-        );
-        const front = exec(
-            "npm run-script front",
-            { env: { ...process.env,
-                LISTEN_PORT: frontPort,
-                API_SERVER: "http://localhost:" + serverPort
-            } }
-        );
+    const serverPort = serverEnvironment.LISTEN_PORT;
+    const frontPort = frontEnvironment.LISTEN_PORT;
 
-        server.stdout.pipe(process.stdout);
-        server.stderr.pipe(process.stderr);
-        front.stdout.pipe(process.stdout);
-        front.stderr.pipe(process.stderr);
+    console.log("Server launch on 'http://localhost:" + serverPort + "'");
+    console.log("Front launch on 'http://localhost:" + frontPort + "'");
 
-        const openInterval = setInterval(() => {
-            checkUp(serverPort, frontPort)
-                .then(() =>  {
-                    console.log("Opening browser to 'http://localhost:" + frontPort + "'");
-                    open("http://localhost:" + frontPort)
-                    clearInterval(openInterval);
-                })
-                .catch(() => {
-                    console.log("Waiting services to launch");
-                })
-        }, 5000);
+    const server = exec(
+        "npm run-script server",
+        { env: { ...process.env, ...serverEnvironment}}
+    );
+    const front = exec(
+        "npm run-script front",
+        { env: { ...process.env, ...frontEnvironment } }
+    );
 
-        server.on("exit", (code) => {
-            clearInterval(openInterval);
-            console.log("Server finished with exit code " + code);
-            console.log("Stopping front");
-            front.removeAllListeners("exit");
-            front.kill("SIGINT");
-            front.kill("SIGKILL");
-        });
+    server.stdout.pipe(process.stdout);
+    server.stderr.pipe(process.stderr);
+    front.stdout.pipe(process.stdout);
+    front.stderr.pipe(process.stderr);
 
-        front.on("exit", (code) => {
-            clearInterval(openInterval);
-            console.log("Front finished  with exit code " + code);
-            console.log("Stopping server");
-            server.removeAllListeners("exit");
-            server.kill("SIGINT");
-            server.kill("SIGKILL");
-        });
+    const openInterval = setInterval(() => {
+        checkUp(serverPort, frontPort)
+            .then(() =>  {
+                clearInterval(openInterval);
+                console.log(
+                    `Opening browser to 'http://localhost:${frontPort}'`
+                );
+                open("http://localhost:" + frontPort)
+            })
+            .catch(() => {
+                console.log("Waiting services to launch");
+            })
+    }, 5000);
 
-        process.on('SIGINT', function() {
-            clearInterval(openInterval);
-            console.log("Closing down");
-            server.kill("SIGINT");
-            front.kill("SIGINT");
-            server.kill("SIGKILL");
-            front.kill("SIGKILL");
-            server.removeAllListeners("exit");
-            front.removeAllListeners("exit");
-        });
+    server.on("exit", (code) => {
+        clearInterval(openInterval);
+        console.log("Server finished with exit code " + code);
+        console.log("Stopping front");
+        front.removeAllListeners("exit");
+        front.kill("SIGINT");
+        front.kill("SIGKILL");
     });
 
+    front.on("exit", (code) => {
+        clearInterval(openInterval);
+        console.log("Front finished  with exit code " + code);
+        console.log("Stopping server");
+        server.removeAllListeners("exit");
+        server.kill("SIGINT");
+        server.kill("SIGKILL");
+    });
+
+    process.on('SIGINT', function() {
+        clearInterval(openInterval);
+        console.log("Closing down");
+        server.kill("SIGINT");
+        front.kill("SIGINT");
+        server.kill("SIGKILL");
+        front.kill("SIGKILL");
+        server.removeAllListeners("exit");
+        front.removeAllListeners("exit");
+    });
+}
+
+
+program
+    .helpOption('--help', 'Usage Help')
+    .storeOptionsAsProperties(false)
+    .passCommandToAction(false);
+
+program
+    .command("postgresql")
+    .option('-f --definition_directory <string>', "The directory where definitions are stored", 'definition')
+    .option('-h --host <string>', "The PostgreSQL hostname or IP address. Environmental: ${PGHOST}", process.env.PGHOST)
+    .option('-d --database <string>', "The database in PostgreSQL to connect to. Environmental: ${PGDATABASE}", process.env.PGDATABASE)
+    .option('-p --port <number>', "The port which PostgreSQL is listening on. Environmental: ${PGPORT}", process.env.PGPORT || "5432")
+    .option('-U --user <string>', "The username used to authenticate against PostgreSQL. Environmental: ${PGUSER}", process.env.PGUSER)
+    .option('-W --password <string>', "The password used to authenticate against PostgreSQL. Environmental: ${PGPASSWORD}", process.env.PGPASSWORD)
+    .action((options) => {
+
+        for (const name of ["PGUSER", "PGPASSWORD", "PGDATABASE", "PGHOST"]) {
+            if (process.env.hasOwnProperty(name)) {
+                options[name.substr(2).toLowerCase()] = process.env[name];
+            }
+        }
+
+        let missing = [];
+        for (const name of ["host", "database", "user", "password"]) {
+            if (!options.hasOwnProperty(name)) {
+                missing.push(name);
+            }
+        }
+
+        if (missing.length) {
+            console.log(
+                `The following options are missing: ${JSON.stringify(missing)}\n` +
+                `\n` +
+                `Please see \`esqlate postgresql --help\``
+            );
+            process.exit(1);
+        }
+
+        try {
+            options['definition_directory'] = prepareDestinationDirectory(
+                options.definition_directory
+            );
+        } catch (e) {
+            console.log(
+                `The definition directory appears to be wrong:\n\n` +
+                e.message
+            );
+            process.exit(1);
+        }
+
+        Promise.all([getPort({port: 3500}), getPort({port: 3600})])
+            .then(([serverPort, frontPort]) => {
+
+                const serverEnvironment = {
+                    CORS_WEB_FRONTEND_ORIGIN: "http://localhost:" + frontPort,
+                    DEFINITION_DIRECTORY: options.definition_directory,
+                    LISTEN_PORT: serverPort,
+                    PGPORT: options.port,
+                    PGPASSWORD: options.password,
+                    PGUSER: options.user,
+                    PGDATABASE: options.database,
+                    PGHOST: options.host,
+                    DATABASE_TYPE: "PostgreSQL",
+                }
+
+                const frontEnvironment = {
+                    LISTEN_PORT: frontPort,
+                    API_SERVER: "http://localhost:" + serverPort
+                }
+
+                launch(serverEnvironment, frontEnvironment);
+            });
+
+    });
+
+
+program
+    .command("mysql")
+    .option('-f --definition_directory <string>', "The directory where definitions are stored", 'definition')
+    .option('-h --host <string>', "The MySQL hostname or IP address. Environmental: ${MYHOST}", process.env.MYHOST)
+    .option('-D --database <string>', "The database in MySQL to connect to. Environmental: ${MYDATABASE}", process.env.MYDATABASE)
+    .option('-P --port <number>', "The port which MySQL is listening on. Environmental: ${MYPORT}", process.env.MYPORT || "3306")
+    .option('-u --user <string>', "The username used to authenticate against MySQL. Environmental: ${MYUSER}", process.env.MYUSER)
+    .option('-p --password <string>', "The password used to authenticate against MySQL. Environmental: ${MYPASSWORD}", process.env.MYPASSWORD)
+    .action((options) => {
+
+        for (const name of ["MYUSER", "MYPASSWORD", "MYDATABASE", "MYHOST"]) {
+            if (process.env.hasOwnProperty(name)) {
+                options[name.substr(2).toLowerCase()] = process.env[name];
+            }
+        }
+
+        let missing = [];
+        for (const name of ["host", "database", "user", "password"]) {
+            if (!options.hasOwnProperty(name)) {
+                missing.push(name);
+            }
+        }
+
+        if (missing.length) {
+            console.log(
+                `The following options are missing: ${JSON.stringify(missing)}\n` +
+                `\n` +
+                `Please see \`esqlate postgresql --help\``
+            );
+            process.exit(1);
+        }
+
+        try {
+            options['definition_directory'] = prepareDestinationDirectory(
+                options.definition_directory
+            );
+        } catch (e) {
+            console.log(
+                `The definition directory appears to be wrong:\n\n` +
+                e.message
+            );
+            process.exit(1);
+        }
+
+        Promise.all([getPort({port: 3500}), getPort({port: 3600})])
+            .then(([serverPort, frontPort]) => {
+
+                const serverEnvironment = {
+                    CORS_WEB_FRONTEND_ORIGIN: "http://localhost:" + frontPort,
+                    DEFINITION_DIRECTORY: options.definition_directory,
+                    LISTEN_PORT: serverPort,
+                    MYPORT: options.port,
+                    MYPASSWORD: options.password,
+                    MYUSER: options.user,
+                    MYDATABASE: options.database,
+                    MYHOST: options.host,
+                    DATABASE_TYPE: "MySQL",
+                }
+
+                const frontEnvironment = {
+                    LISTEN_PORT: frontPort,
+                    API_SERVER: "http://localhost:" + serverPort
+                }
+
+                launch(serverEnvironment, frontEnvironment);
+            });
+
+    });
+
+
+program.parse(process.argv);

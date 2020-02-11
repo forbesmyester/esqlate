@@ -325,7 +325,9 @@ This will has the nicety of automagically picking port numbers and opening the b
 * Clone this repository with https://github.com/forbesmyester/esqlate[eSQLate] with `git clone https://github.com/forbesmyester/esqlate.git`.
 * Change into the directory you checked out the code into with `cd esqlate`
 * Run `npm install` to install dependencies etc.
-* Run `./esqlate`.
+* Run `./esqlate postgresql`.
+
+NOTE: This can bu run using `./esqlate mysql` if you are using a MySQL server.
 
 ==== Docker Compose Method
 
@@ -356,7 +358,38 @@ There are some basic integration tests that run using http://www.cypress.io[Cypr
 docker-compose -f ./docker-compose-integration.yml up
 ----
 
+=== Contributors
+
+Thank you
+
+ * @richrd - esqlate-front: Support for displaying JSONB #1
+
+=== Changelog
+
+
+==== 1.0.0
+
+Initial Release
+
+==== 1.0.2
+
+Esqlate: Work on CI tests and launch script
+Front: Remove envsubst in esqlate-front build scripts
+
+==== 1.0.3
+
+Esqlate: Improve CI tests
+Front: Use prePublishOnly to fix esqlate bug 6
+Server Use prePublishOnly
+
+==== 1.0.4
+
+Server: Fix not being able to use `user_id` parameter
+
+==== 1.1.0
+
+Server: Support multiple databases (MySQL and PostgreSQL currently supported)
+
 === What still needs to be done?
 
 * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.
-* SERVER: Support other types of databases.

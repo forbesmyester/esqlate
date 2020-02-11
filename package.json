@@ -1,6 +1,6 @@
 {
   "name": "esqlate",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "The front page of the Esqlate project ",
   "main": "runner.js",
   "scripts": {
@@ -21,11 +21,11 @@
   },
   "homepage": "https://github.com/forbesmyester/esqlate#readme",
   "dependencies": {
-    "esqlate-front": "^1.0.7",
-    "esqlate-server": "^1.0.1",
+    "commander": "^4.1.1",
+    "esqlate-front": "^1.0.8",
+    "esqlate-server": "^1.1.4",
     "get-port": "^5.1.0",
-    "open": "^7.0.0",
-    "yargs": "^15.1.0"
+    "open": "^7.0.0"
   },
   "devDependencies": {
     "chai-colors": "^1.0.1",
