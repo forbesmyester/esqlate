@@ -118,6 +118,9 @@ function launch(serverEnvironment, frontEnvironment) {
 }
 
 
+let actionPerformed = "";
+
+
 program
     .helpOption('--help', 'Usage Help')
     .storeOptionsAsProperties(false)
@@ -132,6 +135,8 @@ program
     .option('-U --user <string>', "The username used to authenticate against PostgreSQL. Environmental: ${PGUSER}", process.env.PGUSER)
     .option('-W --password <string>', "The password used to authenticate against PostgreSQL. Environmental: ${PGPASSWORD}", process.env.PGPASSWORD)
     .action((options) => {
+
+        actionPerformed = "postgresql";
 
         for (const name of ["PGUSER", "PGPASSWORD", "PGDATABASE", "PGHOST"]) {
             if (process.env.hasOwnProperty(name)) {
@@ -203,6 +208,8 @@ program
     .option('-p --password <string>', "The password used to authenticate against MySQL. Environmental: ${MYPASSWORD}", process.env.MYPASSWORD)
     .action((options) => {
 
+        actionPerformed = "mysql";
+
         for (const name of ["MYUSER", "MYPASSWORD", "MYDATABASE", "MYHOST"]) {
             if (process.env.hasOwnProperty(name)) {
                 options[name.substr(2).toLowerCase()] = process.env[name];
@@ -220,7 +227,7 @@ program
             console.log(
                 `The following options are missing: ${JSON.stringify(missing)}\n` +
                 `\n` +
-                `Please see \`esqlate postgresql --help\``
+                `Please see \`esqlate mysql --help\``
             );
             process.exit(1);
         }
@@ -264,3 +271,8 @@ program
 
 
 program.parse(process.argv);
+
+if (actionPerformed === "") {
+    console.log("No action specified.\n\nPlease re-run program with --help for more information");
+    process.exit(1);
+}
