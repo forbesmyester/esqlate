@@ -362,7 +362,8 @@ docker-compose -f ./docker-compose-integration.yml up
 
 Thank you
 
- * @richrd - esqlate-front: Support for displaying JSONB #1
+ * @richrd - esqlate-front: Support for showing results in Extended Display mode
+ * @richrd - esqlate-front: Support for displaying JSONB
 
 === Changelog
 
@@ -389,6 +390,11 @@ Server: Fix not being able to use `user_id` parameter
 ==== 1.1.0
 
 Server: Support multiple databases (MySQL and PostgreSQL currently supported)
+Front: Support for showing JSONB fields - Thanks @richrd
+
+==== 1.1.1
+
+Front: Support for showing results in Extended Display mode - Thanks @richrd
 
 === What still needs to be done?
 
