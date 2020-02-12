@@ -327,7 +327,7 @@ This will has the nicety of automagically picking port numbers and opening the b
 * Run `npm install` to install dependencies etc.
 * Run `./esqlate postgresql`.
 
-NOTE: This can bu run using `./esqlate mysql` if you are using a MySQL server.
+NOTE: This can be run using `./esqlate mysql` if you are using a MySQL server.
 
 ==== Docker Compose Method
 
