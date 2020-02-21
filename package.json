@@ -1,6 +1,6 @@
 {
   "name": "esqlate",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "The front page of the Esqlate project ",
   "main": "runner.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "dependencies": {
     "commander": "^4.1.1",
     "esqlate-front": "^1.0.9",
-    "esqlate-server": "^1.1.4",
+    "esqlate-server": "^1.1.5",
     "get-port": "^5.1.0",
     "open": "^7.0.0"
   },

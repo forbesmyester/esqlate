@@ -396,6 +396,10 @@ Front: Support for showing JSONB fields - Thanks @richrd
 
 Front: Support for showing results in Extended Display mode - Thanks @richrd
 
+==== 1.1.2
+
+Server: Support parallelism for database queries (roughly connection count, but not quite).
+
 === What still needs to be done?
 
 * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.

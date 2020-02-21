@@ -134,6 +134,7 @@ program
     .option('-p --port <number>', "The port which PostgreSQL is listening on. Environmental: ${PGPORT}", process.env.PGPORT || "5432")
     .option('-U --user <string>', "The username used to authenticate against PostgreSQL. Environmental: ${PGUSER}", process.env.PGUSER)
     .option('-W --password <string>', "The password used to authenticate against PostgreSQL. Environmental: ${PGPASSWORD}", process.env.PGPASSWORD)
+    .option('-r --parallelism <number>', "How many database interactions to perform in parallel", 5)
     .action((options) => {
 
         actionPerformed = "postgresql";
@@ -185,6 +186,7 @@ program
                     PGDATABASE: options.database,
                     PGHOST: options.host,
                     DATABASE_TYPE: "PostgreSQL",
+                    DATABASE_PARALLELISM: options.parallelism,
                 }
 
                 const frontEnvironment = {
@@ -206,6 +208,7 @@ program
     .option('-P --port <number>', "The port which MySQL is listening on. Environmental: ${MYPORT}", process.env.MYPORT || "3306")
     .option('-u --user <string>', "The username used to authenticate against MySQL. Environmental: ${MYUSER}", process.env.MYUSER)
     .option('-p --password <string>', "The password used to authenticate against MySQL. Environmental: ${MYPASSWORD}", process.env.MYPASSWORD)
+    .option('-r --parallelism <number>', "How many database interactions to perform in parallel", 5)
     .action((options) => {
 
         actionPerformed = "mysql";
@@ -257,6 +260,7 @@ program
                     MYDATABASE: options.database,
                     MYHOST: options.host,
                     DATABASE_TYPE: "MySQL",
+                    DATABASE_PARALLELISM: options.parallelism,
                 }
 
                 const frontEnvironment = {
