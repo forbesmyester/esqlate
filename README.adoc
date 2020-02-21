@@ -335,11 +335,9 @@ If you’re just trying eSQLate out the most simple way to test it out is to use
 
 * Clone this repository with https://github.com/forbesmyester/esqlate[eSQLate] with `git clone https://github.com/forbesmyester/esqlate.git`.
 * Change into the directory you checked out the code into with `cd esqlate`
-* Clone https://github.com/forbesmyester/esqlate-server[eSQLate Server] with `[ ! -d "esqlate-server" ] && git clone git@github.com:forbesmyester/esqlate-server.git esqlate-server`.
-* Clone https://github.com/forbesmyester/esqlate-front[eSQLate Front] with `[ ! -d "esqlate-front" ] && git clone git@github.com:forbesmyester/esqlate-front.git esqlate-front`.
 * Bring up the services using `docker-compose build && docker-compose up`.
+* Open your web browser up to http://localhost:8800/
 * Customize the docker-compose.yml to meet your needs.
-* Open your web browser up to http://localhost:8080/
 
 ==== Directly on VM/Metal Method
 
