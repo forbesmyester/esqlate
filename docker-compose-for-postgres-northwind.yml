@@ -1,0 +1,36 @@
+version: "3"
+
+# See notes at https://github.com/forbesmyester/esqlate/blob/master/README.adoc#docker-compose-method - You need to clone some repos first...
+
+volumes: 
+  db-data:
+
+networks:
+  database:
+    driver: bridge
+
+services:
+
+  db:
+    image: postgres:12
+    environment:
+    - POSTGRES_PASSWORD=postgres
+    ports:
+    - "127.0.0.1:5432:5432"
+    volumes:
+    - db-data:/var/lib/postgresql/data
+    networks:
+    - database
+
+  db_loader:
+    build:
+      context: ./node_modules/esqlate-server
+      dockerfile: Dockerfile-load-northwind-example-database
+    environment:
+    - PGUSER=postgres
+    - PGPASSWORD=postgres
+    - PGDATABASE=postgres
+    - PGHOST=db
+    networks:
+    - database
+
