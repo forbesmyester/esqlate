@@ -398,6 +398,10 @@ Front: Support for showing results in Extended Display mode - Thanks @richrd
 
 Server: Support parallelism for database queries (roughly connection count, but not quite).
 
+==== 1.1.3
+
+Front & Server: Fix general bit-rot by updating child esqlate-* repositories.
+
 === What still needs to be done?
 
 * SERVER: Currently results persisted to the local disk. I plan to add an AWS S3 persistence option.

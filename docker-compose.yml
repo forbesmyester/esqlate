@@ -1,7 +1,5 @@
 version: "3"
 
-# See notes at https://github.com/forbesmyester/esqlate/blob/master/README.adoc#docker-compose-method - You need to clone some repos first...
-
 volumes: 
   db-data:
   pgadmin4-var-lib-postgres:
@@ -50,7 +48,7 @@ services:
     - PGHOST=db
     volumes:
     # - ./esqlate-server/example_definition:/esqlate-server/definition:ro # To use this uncomment the DEFINITION_DIRECTORY comment without environment
-    - ./persistence:/esqlate-server/persistence
+    - ./persistence:/node_modules/esqlate-server/persistence
     networks:
     - database
     - esqlate
@@ -63,7 +61,7 @@ services:
     - AGE_BEFORE_CLEANING=1
     - LOCATION=./persistence
     volumes:
-    - ./persistence:/esqlate-server/persistence
+    - ./persistence:/node_modules/esqlate-server/persistence
 
   front:
     build:
