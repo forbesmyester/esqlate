@@ -5,3 +5,5 @@
 package-lock.json
 /cypress/videos
 /definition
+/dep-esqlate-front.html
+/dep-esqlate-server
