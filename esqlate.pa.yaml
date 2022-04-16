@@ -1,7 +1,7 @@
 connection:
-  exit_esqlate_server: l:esqlate_server[X] | l:exit_esqlate_server | j:log
-  exit_esqlate_server_grep: l:esqlate_server_grep[X] | l:exit_esqlate_server_grep | j:log
-  exit_esqlate_front: l:esqlate_front[X] | l:exit_esqlate_front | j:log
+  # exit_esqlate_server: l:esqlate_server[X] | l:exit_esqlate_server | j:log
+  # exit_esqlate_server_grep: l:esqlate_server_grep[X] | l:exit_esqlate_server_grep | j:log
+  # exit_esqlate_front: l:esqlate_front[X] | l:exit_esqlate_front | j:log
   l2: j:esqlate_server_out | j:log
   l3: l:esqlate_server[E] | j:log
   log: j:log | d:log
@@ -15,26 +15,26 @@ faucet:
     source: '-'
 launch:
   esqlate_server:
-    cmd: bash
+    cmd: node
     arg:
-    - -c
-    - "node esqlate-startup.js server"
+    - "esqlate-startup.js"
+    - "server"
     # - '( if [ ! -d ./dep-esqlate-server ]; then echo "INFO: Checking out eSQLate Server"; git clone https://github.com/forbesmyester/esqlate-server.git ./dep-esqlate-server; fi ) && cd ./dep-esqlate-server && git checkout v1.2.0 && ( if [ ! -f dist/cmd.js ]; then echo "INFO: Installing eSQLate Server dependencies" && ( npm install | sed "s/^/SERVER: NPM_INSTALL: /" ) && echo "INFO: Building eSQLate Server" && ( npm run-script build | sed "s/^/SERVER: NPM_BUILD: /" ); else echo "INFO: eSQLate Server already configured"; fi ) && node dist/cmd.js serve'
-  esqlate_server_grep:
-    cmd: grep
+  esqlate_server_grep: # converted from `grep`, because Windows...
+    cmd: node
     arg:
-    - --line-buffered
-    - '^RESPONSE\: *[0-9]\+\:'
-  esqlate_front_grep:
-    cmd: grep
+    - "esqlate-startup.js"
+    - "sgrep"
+  esqlate_front_grep: # converted from `grep`, because Windows...
+    cmd: node
     arg:
-    - --line-buffered
-    - '^REQUEST\: *[0-9]\+\:'
+    - "esqlate-startup.js"
+    - "sgrep"
   esqlate_front:
-    cmd: bash
+    cmd: node
     arg:
-    - -c
-    - "node esqlate-startup.js front"
+    - "esqlate-startup.js"
+    - "front"
     # - 'if [ ! -f ./dep-esqlate-front.html ]; then echo "INFO: Downloading eSQLate Front HTML" && curl -L "https://github.com/forbesmyester/esqlate-front/releases/download/v1.1.2/index.html" -o dep-esqlate-front.html; fi && wv_linewise -t eSQLate -c dep-esqlate-front.html -s IN=-'
     # - '( if [ ! -d ./dep-esqlate-front ]; then echo "INFO: Checking out eSQLate Front"; git clone https://github.com/forbesmyester/esqlate-front.git ./dep-esqlate-front; fi ) && cd ./dep-esqlate-front && git checkout v1.1.1 && ( if [ ! -f index.html ]; then echo "INFO: Installing eSQLate Front dependencies" && (npm install | sed "s/^/FRONT: NPM_INSTALL: /" ) && echo "INFO: Building eSQLate Front" && ( npm run-script build | sed "s/^/FRONT: NPM_BUILD: /" ); else echo "INFO: eSQLate Front already configured"; fi ) && ( if [ ! -d node_modules ]; then npm install; fi ) && wv_linewise -t eSQLate -c index.html -s IN=-'
   exit_esqlate_server:
@@ -49,3 +49,4 @@ launch:
     cmd: awk
     arg:
     - ' { print "EXIT: esqlate_front: " $0 }'
+    

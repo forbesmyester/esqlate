@@ -1,7 +1,8 @@
 const { copyFileSync, existsSync, mkdirSync, readdirSync, statSync, writeFileSync } = require('fs');
-const { join: pathJoin } = require('path');
+const { join: pathJoin, resolve } = require('path');
 const { spawn, spawnSync } = require('child_process');
 const download = require('download');
+const { createInterface } = require('readline');
 
 function getStat(filename) {
     if (!existsSync(filename)) {
@@ -45,14 +46,20 @@ function createDefinitionDirectory() {
 
 function myExecNoWait(cmd, args) {
     const out = spawnSync(cmd, args);
+    const outStatus = out.status
     if (out.status != 0) {
         console.error("Error running " + cmd + " " + JSON.stringify(args));
         console.error("");
+        console.error("EXIT: " + outStatus);
+        console.error("");
         console.error("STDOUT: ");
-        console.error(out.stdout.toString());
+        console.error((out.stdout || "").toString());
         console.error("");
         console.error("STDERR: ");
-        console.error(out.stderr.toString());
+        console.error((out.stderr || "").toString());
+        console.error("");
+        console.error("ERROR: ");
+        console.error((out.error || "").toString());
         console.error("");
         process.exit(out.status);
     }
@@ -91,9 +98,17 @@ function server() {
     process.chdir("./dep-esqlate-server/");
     myExecNoWait("git", ["checkout", "v1.2.0"]);
 
+    if (!isCorrectStat(getStat("./node_modules"), "d")) {
+        myExecNoWait(
+            process.platform.match(/^win[0-9]+/) ? "npm.cmd" : "npm",
+            ["install"]
+        );
+    }
     if (!isCorrectStat(getStat("./dist/cmd.js"), "f")) {
-        myExecNoWait("npm", ["install"]);
-        myExecNoWait("npm", ["run-script", "build"]);
+        myExecNoWait(
+            process.platform.match(/^win[0-9]+/) ? "npm.cmd" : "npm",
+            ["run-script", "build"]
+        );
     }
 
     return myExec(
@@ -141,12 +156,38 @@ function run(f) {
         });
 }
 
+function sillyGrep() {
+    const rl = createInterface({
+        input: process.stdin,
+        crlfDelay: Infinity
+    });
+
+    return new Promise((resolve) => {
+
+        rl.on('line', (line) => {
+            if (line.match(/^((REQUEST\: )|(RESPONSE\:))/)) {
+                process.stdout.write(line + "\n");
+            }
+        });
+
+        rl.on('close', () => {
+            resolve()
+        })
+
+    });
+
+
+}
+
 switch (process.argv.length ? process.argv.slice(process.argv.length -1)[0] : "") {
     case "server":
         run(server);
         break;
     case "front":
         run(front);
+        break;
+    case "sgrep":
+        run(sillyGrep);
         break;
     default:
         console.error("You must specifiy either \"server\" or \"front\"");
