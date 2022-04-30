@@ -1,7 +1,7 @@
 connection:
-  # exit_esqlate_server: l:esqlate_server[X] | l:exit_esqlate_server | j:log
-  # exit_esqlate_server_grep: l:esqlate_server_grep[X] | l:exit_esqlate_server_grep | j:log
-  # exit_esqlate_front: l:esqlate_front[X] | l:exit_esqlate_front | j:log
+  exit_esqlate_server: l:esqlate_server[X] | l:exit_esqlate_server | j:log
+  exit_esqlate_server_grep: l:esqlate_server_grep[X] | l:exit_esqlate_server_grep | j:log
+  exit_esqlate_front: l:esqlate_front[X] | l:exit_esqlate_front | j:log
   l2: j:esqlate_server_out | j:log
   l3: l:esqlate_server[E] | j:log
   log: j:log | d:log
@@ -24,12 +24,12 @@ launch:
     cmd: node
     arg:
     - "esqlate-startup.js"
-    - "sgrep"
+    - "silly-grep"
   esqlate_front_grep: # converted from `grep`, because Windows...
     cmd: node
     arg:
     - "esqlate-startup.js"
-    - "sgrep"
+    - "silly-grep"
   esqlate_front:
     cmd: node
     arg:
@@ -49,4 +49,3 @@ launch:
     cmd: awk
     arg:
     - ' { print "EXIT: esqlate_front: " $0 }'
-    

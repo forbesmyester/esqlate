@@ -4,10 +4,8 @@
   "description": "The front page of the Esqlate project ",
   "main": "runner.js",
   "scripts": {
-    "front-prepare": "cd ./node_modules/esqlate-front && bash -c ' [ ! -d node_modules ] && npm install || true ' && npm run-script build-templates",
-    "server-prepare": "cd ./node_modules/esqlate-server && bash -c ' [ ! -d node_modules ] && npm install || true '",
-    "front": "npm run-script front-prepare && cd ./node_modules/esqlate-front && npm start",
-    "server": "npm run-script server-prepare && cd ./node_modules/esqlate-server && npm start",
+    "front": "node esqlate-startup.js build-front && cd ./dep-esqlate-front && npm start",
+    "server": "node esqlate-startup.js build-server && cd ./dep-esqlate-server && npm start",
     "test": "npm run-script front-prepare && npm run-script server-prepare"
   },
   "repository": {

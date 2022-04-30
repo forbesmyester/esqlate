@@ -23,7 +23,7 @@ services:
 
   server:
     build:
-      context: ./node_modules/esqlate-server
+      context: ./dep-esqlate-server
       dockerfile: Dockerfile
     environment:
     - DEFINITION_DIRECTORY=definition
@@ -41,7 +41,7 @@ services:
 
   reaper:
     build:
-      context: ./node_modules/esqlate-server
+      context: ./dep-esqlate-server
       dockerfile: Dockerfile-reaper
     environment:
     - AGE_BEFORE_CLEANING=1
@@ -51,7 +51,7 @@ services:
 
   front:
     build:
-      context: ./node_modules/esqlate-front
+      context: ./dep-esqlate-front
       dockerfile: Dockerfile
     environment:
     - API_SERVER=/esqlate-server/

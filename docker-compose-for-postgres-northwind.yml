@@ -24,7 +24,7 @@ services:
 
   db_loader:
     build:
-      context: ./node_modules/esqlate-server
+      context: ./dep-esqlate-server
       dockerfile: Dockerfile-load-northwind-example-database
     environment:
     - PGUSER=postgres

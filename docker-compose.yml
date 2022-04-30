@@ -25,7 +25,7 @@ services:
 
   db_loader:
     build:
-      context: ./node_modules/esqlate-server
+      context: ./dep-esqlate-server
       dockerfile: Dockerfile-load-northwind-example-database
     environment:
     - PGUSER=postgres
@@ -37,7 +37,7 @@ services:
 
   server:
     build:
-      context: ./node_modules/esqlate-server
+      context: ./dep-esqlate-server
       dockerfile: Dockerfile
     environment:
     # - DEFINITION_DIRECTORY=definition
@@ -48,24 +48,24 @@ services:
     - PGHOST=db
     volumes:
     # - ./esqlate-server/example_definition:/esqlate-server/definition:ro # To use this uncomment the DEFINITION_DIRECTORY comment without environment
-    - ./persistence:/node_modules/esqlate-server/persistence
+    - ./persistence:/dep-esqlate-server/persistence
     networks:
     - database
     - esqlate
 
   reaper:
     build:
-      context: ./node_modules/esqlate-server
+      context: ./dep-esqlate-server
       dockerfile: Dockerfile-reaper
     environment:
     - AGE_BEFORE_CLEANING=1
     - LOCATION=./persistence
     volumes:
-    - ./persistence:/node_modules/esqlate-server/persistence
+    - ./persistence:/dep-esqlate-server/persistence
 
   front:
     build:
-      context: ./node_modules/esqlate-front
+      context: ./dep-esqlate-front
       dockerfile: Dockerfile
     environment:
     - API_SERVER=/esqlate-server/

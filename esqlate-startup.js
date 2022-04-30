@@ -4,6 +4,9 @@ const { spawn, spawnSync } = require('child_process');
 const download = require('download');
 const { createInterface } = require('readline');
 
+const esqlateServerVersion = "1.2.1"
+const esqlateFrontVersion = "1.1.3"
+
 function getStat(filename) {
     if (!existsSync(filename)) {
         return false;
@@ -86,30 +89,83 @@ function myExec(cmd, args, opts) {
 }
 
 
-function server() {
-
-    if (!isCorrectStat(getStat("./dep-esqlate-server"), "d")) {
+function checkout(repo, dest, version) {
+    if (!isCorrectStat(getStat(dest), "d")) {
         myExecNoWait(
             "git",
-            ["clone", "https://github.com/forbesmyester/esqlate-server.git", "./dep-esqlate-server"]
+            ["clone", repo, dest]
         );
     }
-    createDefinitionDirectory();
-    process.chdir("./dep-esqlate-server/");
-    myExecNoWait("git", ["checkout", "v1.2.0"]);
+    if (version !== undefined) {
+        let oldDir = process.cwd();
+        process.chdir(dest);
+        myExecNoWait("git", ["checkout", version]);
+        process.chdir(oldDir);
+    }
+    return Promise.resolve({ status: 0 });
+}
 
+
+function checkoutServer() {
+    return checkout("https://github.com/forbesmyester/esqlate-server.git", "./dep-esqlate-server", esqlateServerVersion)
+}
+
+
+function checkoutFront(version) {
+    return checkout("https://github.com/forbesmyester/esqlate-front.git", "./dep-esqlate-front", esqlateFrontVersion);
+}
+
+
+function npmInstall(dir) {
+    let oldDir = process.cwd();
+    process.chdir(dir);
     if (!isCorrectStat(getStat("./node_modules"), "d")) {
         myExecNoWait(
             process.platform.match(/^win[0-9]+/) ? "npm.cmd" : "npm",
             ["install"]
         );
     }
-    if (!isCorrectStat(getStat("./dist/cmd.js"), "f")) {
+    process.chdir(oldDir);
+    return Promise.resolve({ status: 0 });
+}
+
+
+function npmBuild(dir, checkFile) {
+    let oldDir = process.cwd();
+    process.chdir(dir);
+    if (!isCorrectStat(getStat(checkFile), "f")) {
         myExecNoWait(
             process.platform.match(/^win[0-9]+/) ? "npm.cmd" : "npm",
             ["run-script", "build"]
         );
     }
+    process.chdir(oldDir);
+    return Promise.resolve({ status: 0 });
+}
+
+
+function buildServer() {
+    checkoutServer();
+    createDefinitionDirectory();
+    npmInstall("./dep-esqlate-server/");
+    return npmBuild("./dep-esqlate-server/", "./dist/cmd.js");
+}
+
+
+function buildFront() {
+    checkoutFront();
+    npmInstall("./dep-esqlate-front/");
+    return npmBuild("./dep-esqlate-front/", "index.html");
+}
+
+
+function server() {
+
+    checkoutServer();
+    createDefinitionDirectory();
+    npmInstall("./dep-esqlate-server/");
+    npmBuild("./dep-esqlate-server/", "./dist/cmd.js");
+    process.chdir("./dep-esqlate-server/");
 
     return myExec(
         "node",
@@ -119,16 +175,21 @@ function server() {
 
 }
 
-function front() {
-
+function downloadFront() {
     return Promise.resolve(isCorrectStat(getStat("./dep-esqlate-front.html"), "f"))
         .then((haveHtml) => {
             if (!haveHtml) {
-                return download("https://github.com/forbesmyester/esqlate-front/releases/download/v1.1.2/index.html")
+                return download("https://github.com/forbesmyester/esqlate-front/releases/download/" + esqlateFrontVersion + "/index.html")
                     .then((bs) => { writeFileSync("./dep-esqlate-front.html", bs.toString()) })
+                    .then(() => ({ status: 0 }));
             }
-            return Promise.resolve(true);
-        })
+            return ({ status: 0 });
+        });
+}
+
+function front() {
+
+    return downloadFront()
         .then(() => {
             return myExec(
                 "wv_linewise",
@@ -179,17 +240,22 @@ function sillyGrep() {
 
 }
 
-switch (process.argv.length ? process.argv.slice(process.argv.length -1)[0] : "") {
-    case "server":
-        run(server);
-        break;
-    case "front":
-        run(front);
-        break;
-    case "sgrep":
-        run(sillyGrep);
-        break;
-    default:
-        console.error("You must specifiy either \"server\" or \"front\"");
-        process.exit(1);
+let commands = {
+    "server": server,
+    "front": front,
+    "checkout-front": checkoutFront,
+    "checkout-server": checkoutServer,
+    "npm-front": npmInstall.bind(null, "dep-esqlate-front"),
+    "npm-server": npmInstall.bind(null, "dep-esqlate-server"),
+    "download-front": downloadFront,
+    "build-front": buildFront,
+    "build-server": buildServer,
+    "silly-grep": sillyGrep,
+};
+
+let cmd = (process.argv.length ? process.argv.slice(process.argv.length -1)[0] : "");
+if (!commands.hasOwnProperty(cmd)) {
+    console.error("You must specifiy one of " + JSON.stringify(Object.getOwnPropertyNames(commands)));
+    process.exit(1);
 }
+run(commands[cmd]);
