@@ -1,6 +1,5 @@
 connection:
   exit_esqlate_server: l:esqlate_server[X] | l:exit_esqlate_server | j:log
-  exit_esqlate_server_grep: l:esqlate_server_grep[X] | l:exit_esqlate_server_grep | j:log
   exit_esqlate_front: l:esqlate_front[X] | l:exit_esqlate_front | j:log
   l2: j:esqlate_server_out | j:log
   l3: l:esqlate_server[E] | j:log
@@ -35,17 +34,13 @@ launch:
     arg:
     - "esqlate-startup.js"
     - "front"
-    # - 'if [ ! -f ./dep-esqlate-front.html ]; then echo "INFO: Downloading eSQLate Front HTML" && curl -L "https://github.com/forbesmyester/esqlate-front/releases/download/v1.1.2/index.html" -o dep-esqlate-front.html; fi && wv_linewise -t eSQLate -c dep-esqlate-front.html -s IN=-'
-    # - '( if [ ! -d ./dep-esqlate-front ]; then echo "INFO: Checking out eSQLate Front"; git clone https://github.com/forbesmyester/esqlate-front.git ./dep-esqlate-front; fi ) && cd ./dep-esqlate-front && git checkout v1.1.1 && ( if [ ! -f index.html ]; then echo "INFO: Installing eSQLate Front dependencies" && (npm install | sed "s/^/FRONT: NPM_INSTALL: /" ) && echo "INFO: Building eSQLate Front" && ( npm run-script build | sed "s/^/FRONT: NPM_BUILD: /" ); else echo "INFO: eSQLate Front already configured"; fi ) && ( if [ ! -d node_modules ]; then npm install; fi ) && wv_linewise -t eSQLate -c index.html -s IN=-'
-  exit_esqlate_server:
-    cmd: awk
+  exit_esqlate_server: # converted from `sed`, because Windows...
+    cmd: node
     arg:
-    - ' { print "EXIT: esqlate_server: " $0 }'
-  exit_esqlate_server_grep:
-    cmd: awk
+    - "esqlate-startup.js"
+    - "silly-sed-server"
+  exit_esqlate_front: # converted from `sed`, because Windows...
+    cmd: node
     arg:
-    - ' { print "EXIT: esqlate_server_grep: " $0 }'
-  exit_esqlate_front:
-    cmd: awk
-    arg:
-    - ' { print "EXIT: esqlate_front: " $0 }'
+    - "esqlate-startup.js"
+    - "silly-sed-front"

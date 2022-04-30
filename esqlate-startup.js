@@ -4,8 +4,9 @@ const { spawn, spawnSync } = require('child_process');
 const download = require('download');
 const { createInterface } = require('readline');
 
-const esqlateServerVersion = "1.2.1"
-const esqlateFrontVersion = "1.1.3"
+const esqlateServerVersion = "v1.2.1"
+const esqlateFrontVersion = "v1.1.3"
+
 
 function getStat(filename) {
     if (!existsSync(filename)) {
@@ -13,6 +14,7 @@ function getStat(filename) {
     }
     return statSync(filename);
 }
+
 
 function isCorrectStat(stat, type) {
     if (stat == false) {
@@ -26,6 +28,7 @@ function isCorrectStat(stat, type) {
     }
     return true
 }
+
 
 function createDefinitionDirectory() {
     let definitionStat;
@@ -46,6 +49,7 @@ function createDefinitionDirectory() {
         );
     });
 }
+
 
 function myExecNoWait(cmd, args) {
     const out = spawnSync(cmd, args);
@@ -175,6 +179,7 @@ function server() {
 
 }
 
+
 function downloadFront() {
     return Promise.resolve(isCorrectStat(getStat("./dep-esqlate-front.html"), "f"))
         .then((haveHtml) => {
@@ -186,6 +191,7 @@ function downloadFront() {
             return ({ status: 0 });
         });
 }
+
 
 function front() {
 
@@ -200,6 +206,7 @@ function front() {
         .catch((e) => ({ status: 1, message: e.message }));
 
 }
+
 
 function run(f) {
     f()
@@ -216,6 +223,7 @@ function run(f) {
             process.exit(1)
         });
 }
+
 
 function sillyGrep() {
     const rl = createInterface({
@@ -237,8 +245,29 @@ function sillyGrep() {
 
     });
 
+}
+
+
+function sillySed(pre) {
+    const rl = createInterface({
+        input: process.stdin,
+        crlfDelay: Infinity
+    });
+
+    return new Promise((resolve) => {
+
+        rl.on('line', (line) => {
+            process.stdout.write(pre + line + "\n");
+        });
+
+        rl.on('close', () => {
+            resolve()
+        })
+
+    });
 
 }
+
 
 let commands = {
     "server": server,
@@ -251,7 +280,10 @@ let commands = {
     "build-front": buildFront,
     "build-server": buildServer,
     "silly-grep": sillyGrep,
+    "silly-sed-server": sillySed.bind(null, "Exit: esqlate_server: "),
+    "silly-sed-front": sillySed.bind(null, "Exit: esqlate_front: "),
 };
+
 
 let cmd = (process.argv.length ? process.argv.slice(process.argv.length -1)[0] : "");
 if (!commands.hasOwnProperty(cmd)) {
